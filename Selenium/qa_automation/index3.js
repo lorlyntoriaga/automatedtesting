@@ -142,7 +142,7 @@ const main = async () => {
     await addVendorRef.sendKeys("SO00001");
 
     // optionally verify value
-    const vendorRefValue = await vendorRefValue.getAttribute("value");
+    const vendorRefValue = await addVendorRef.getAttribute("value");
     console.log("vendor ref entered:", vendorRefValue);
 
     await driver.sleep(3000)
@@ -161,6 +161,16 @@ const main = async () => {
         until.elementLocated(By.id('currency_id_0')), 3000);
 
     await driver.wait(until.elementIsVisible(currency), 5000);
+
+    //to clear currency (if needed) and send keys
+    await currency.clear();
+    await currency.sendKeys("INR");
+
+    // optionally verify value of currency
+    const currValue = await currency.getAttribute("value");
+    console.log("currency entered:", currValue);
+
+    await driver.sleep(3000)
 
     } catch(err) {
     console.error("test failed:", err);
