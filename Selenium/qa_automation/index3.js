@@ -343,16 +343,16 @@ const main = async () => {
 
     // Add message to field
     const addEmail = await driver.wait(
-        until.elementLocated(By.xpath("//input[contains(@placeholder,'e.g. mail@example.com')]")),
+        until.elementLocated(By.xpath("//div[contains(@class,'o-mail')]//input")),
         4000
     ); 
 
-    await driver.wait(until.elementIsVisible(sendMessage), 7000);
+    await driver.wait(until.elementIsVisible(addEmail), 7000);
     await sendMessage.click();
     await sendMessage.sendKeys('collanaolla@gmail.com');
 
     // get the value of added message
-    const sendMessageValue = await sendMessage.getAttribute('value');
+    const sendMessageValue = await addEmail.getAttribute('value');
     console.log('message entered', sendMessageValue) 
 
     await driver.sleep(4000); 
@@ -376,11 +376,10 @@ const main = async () => {
 
     await driver.wait(until.elementIsVisible(typeMessage), 4000);
     await typeMessage.click();
-
     await typeMessage.sendKeys('Hello Collana');
 
     // get the value of added message
-    const typeMessageValue = typeMessage.getAttribute('value');
+    const typeMessageValue = await typeMessage.getAttribute('value');
     console.log('message entered', typeMessageValue) 
 
     await driver.sleep(2000);
