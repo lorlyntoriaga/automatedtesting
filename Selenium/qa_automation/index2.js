@@ -171,7 +171,18 @@ const main = async () => {
 
     await driver.wait(until.elementIsVisible(addQuantity), 5000);
     await addQuantity.click();
-    await addQuantity.sendKeys("2");
+
+     // Wait for the input to appear inside the cell
+       const input = await driver.wait(
+         until.elementLocated(By.xpath("//td[@name='product_qty']//input")),
+         10000
+       );
+   
+       // Clear existing value and set to 2
+       await input.sendKeys(Key.chord(Key.CONTROL, 'a')); // select all
+       await input.sendKeys(Key.BACK_SPACE);              // clear
+       await input.sendKeys('2');
+       await input.sendKeys(Key.ENTER);                   // save
 
     // optionally verify value
     const quantityValue = await addQuantity.getAttribute("value");
