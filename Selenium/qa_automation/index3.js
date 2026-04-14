@@ -1,6 +1,7 @@
 
 const {By, Builder, Browser, until, Key, Button} = require('selenium-webdriver');
 const { elementLocated, elementIsVisible } = require('selenium-webdriver/lib/until');
+const fs = require('fs');
 
 const main = async () => {
     const driver = await new Builder().forBrowser(Browser.CHROME).build();
@@ -338,35 +339,35 @@ const main = async () => {
 
     await driver.wait(until.elementIsVisible(sendMessage), 4000);
     await sendMessage.click();
+    console.log("Send button is clicked")
 
     await driver.sleep(2000);
 
-    // Add message to field
-    const addEmail = await driver.wait(
-        until.elementLocated(By.xpath("//div[contains(@class,'o-mail')]//input")),
-        4000
-    ); 
-
-    await driver.wait(until.elementIsVisible(addEmail), 7000);
-    await sendMessage.click();
-    await sendMessage.sendKeys('collanaolla@gmail.com');
-
-    // get the value of added message
-    const sendMessageValue = await addEmail.getAttribute('value');
-    console.log('message entered', sendMessageValue) 
-
-    await driver.sleep(4000); 
-
-    // Click Set Email button
-    const setEmail = await driver.wait(
-        until.elementLocated(By.xpath("//button[normalize-space()='Set Email']")),
-        3000
+     // Wait for popup input (DO NOT wait for visibility)
+    let emailInput = await driver.wait(
+      until.elementLocated(By.css("input[placeholder='e.g. mail@example.com']")),
+      10000
     );
 
-    await driver.wait(until.elementIsVisible(setEmail), 4000)
-    await setEmail.click();
-    console.log("Set Email button is clicked")
-    await driver.sleep(4000);
+    // Force focus + type email
+    await driver.executeScript(`
+      arguments[0].focus();
+      arguments[0].value = "test@example.com";
+      arguments[0].dispatchEvent(new Event('input', { bubbles: true }));
+    `, emailInput);
+
+    console.log("Email entered");
+
+    // Click "Set Email" button
+    const setEmailBtn = await driver.wait(
+      until.elementLocated(By.xpath("//button[normalize-space()='Set Email']")),
+      5000
+    );
+
+    // Use JS click (popup overlays can block normal click)
+    await driver.executeScript("arguments[0].click();", setEmailBtn);
+
+    console.log("Set Email button clicked");
 
     // Click Send Message button
     const typeMessage = await driver.wait(
