@@ -369,7 +369,7 @@ const main = async () => {
 
     console.log("Set Email button clicked");
 
-    // Click Send Message button
+    /* Click Send Message button
     const typeMessage = await driver.wait(
         until.elementLocated(By.css('button.o-mail-Chatter-sendMessage')),
         4000
@@ -383,9 +383,7 @@ const main = async () => {
     const typeMessageValue = await typeMessage.getAttribute('value');
     console.log('message entered', typeMessageValue) 
 
-    await driver.sleep(2000);
-
-
+    await driver.sleep(2000); */
 
 
     } catch(err) {

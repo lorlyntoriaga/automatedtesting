@@ -40,62 +40,36 @@ const main = async () => {
     const pwdValue = await passwordInput.getAttribute("value");
     console.log("Password entered:", pwdValue);
 
-    // wait for submit button
-    const loginBtn = await driver.wait(
-        until.elementLocated(By.css('button.btn.btn-primary')),
-        8000);
+    
+    // 🔹 3. Handle Cloudflare CAPTCHA (manual step)
+    console.log("👉 Please solve CAPTCHA manually...");
+    await driver.sleep(20000); // give time to click "Verify you are human"
 
-    await driver.wait(until.elementIsVisible(loginBtn), 4000);
-    await loginBtn.click();
-    console.log("Login button clicked");
+    // 🔹 4. Wait until Sign In button is enabled
+    const signInBtn = await driver.findElement(
+      By.xpath("//button[normalize-space()='Sign in']")
+    );
 
-    await driver.sleep(2000);
+    await driver.wait(async () => {
+    const classes = await signInBtn.getAttribute('class');
+      return !classes.includes('disabled') &&
+             !classes.includes('cf_form_disabled');
+    }, 30000);
 
-    // click Purchase App
-    const purchaseBtn = await driver.wait(
-        until.elementLocated(By.id('result_app_6')),
-        8000);
+    // 🔹 5. Scroll + Click
+    await driver.executeScript(
+      "arguments[0].scrollIntoView(true);",
+      signInBtn
+    );
 
-    await driver.wait(until.elementIsVisible(purchaseBtn), 4000);
-    await purchaseBtn.click();
-    console.log("Purchase button clicked");
+    await signInBtn.click();
 
-    await driver.sleep(2000)
+    // 🔹 6. Wait for successful login (example: dashboard)
+    await driver.wait(until.urlContains('/web'), 15000);
 
-    // Click Order menu
-    const orderbtn = await driver.wait(
-        until.elementLocated(By.css('button[data-menu-xmlid="purchase.menu_procurement_management"]')),
-        8000);
+    console.log("✅ Login successful");
 
-    await driver.wait(until.elementIsVisible(orderbtn), 4000);
-    await orderbtn.click();
-    console.log("Order menu is clicked");
 
-    await driver.sleep(2000)
-
-    // Purhase Order
-    const purchaseorder = await driver.wait(
-        until.elementLocated(By.css('a[data-menu-xmlid="purchase.menu_purchase_form_action"]')),
-        8000);
-
-    await driver.wait(until.elementIsVisible(purchaseorder), 4000);
-
-    //  Step 3: Click using JavaScript (most reliable in Odoo)
-    await driver.executeScript("arguments[0].click();", purchaseorder);
-    console.log("Purchase Order menu is clicked")
-
-    await driver.sleep(4000)
-
-    // new Purchase button
-    const newPurcBtn = await driver.wait(
-        until.elementLocated(By.css('button.o_list_button_add')), 
-        4000);
-
-    await driver.wait(until.elementIsVisible(newPurcBtn), 4000);
-    await newPurcBtn.click();
-    console.log("New Purchase button clicked");
-
-    await driver.sleep(4000)
 
      } catch(err) {
     console.error("test failed:", err);
