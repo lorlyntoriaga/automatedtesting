@@ -5,15 +5,42 @@ const main = async () => {
     const driver = await new Builder().forBrowser(Browser.CHROME).build();
     
     try{
-    await driver.get('https://reach52-test.odoo.com/odoo');
+   await driver.get('https://odoo.uat.reach52.com/web/database/selector');
 
-    const title = await driver.getTitle()
-    console.log('page title', title)
+    // Shows page title and database
+    const dblistpage = await driver.getTitle()
+    console.log('database list page', dblistpage)
+
+    await driver.sleep(4000);
+
+   // Wait until correct page is loaded
+    await driver.wait(async () => {
+      const url = await driver.getCurrentUrl();
+      return url.includes("database") || url.includes("db=");
+    }, 15000);
+
+    // Wait for DB list container
+    await driver.wait(
+      until.elementLocated(By.css(".list-group")),
+      15000
+    );
+
+    // Debug: confirm links exist
+    let links = await driver.findElements(By.css("a"));
+    console.log("Links found:", links.length);
+
+    // Click target DB
+    let dbLink = await driver.findElement(
+      By.xpath("//a[contains(@href,'dev18-demo')]")
+    );
+
+    await dbLink.click();
+    await driver.sleep(2000);
 
     //wait for the username field to be present and visible
     const usernameInput = await driver.wait(
-    until.elementLocated(By.id("login")),
-    15000);
+        until.elementLocated(By.id("login")), 
+        15000);
 
     await driver.wait(until.elementIsVisible(usernameInput), 5000);
 
@@ -28,8 +55,7 @@ const main = async () => {
     // wait for the username field to be present and visible
     const passwordInput = await driver.wait(
         until.elementLocated(By.id('password')),
-        15000
-    );
+        15000);
 
     await driver.wait(until.elementIsVisible(passwordInput), 5000);
 
@@ -44,18 +70,18 @@ const main = async () => {
     // wait for submit button
     const loginBtn = await driver.wait(
         until.elementLocated(By.css('button.btn.btn-primary')),
-        10000
-    );
+        8000);
 
-    await driver.wait(until.elementIsVisible(loginBtn), 5000);
+    await driver.wait(until.elementIsVisible(loginBtn), 4000);
     await loginBtn.click();
     console.log("Login button clicked");
 
-    await driver.sleep(2000)
-
+    await driver.sleep(2000);
+    
+    
     // click Purchase App
     const purchaseBtn = await driver.wait(
-        until.elementLocated(By.id('result_app_6')),
+        until.elementLocated(By.id('result_app_5')),
         10000
     );
 
