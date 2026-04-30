@@ -31,7 +31,7 @@ const main = async () => {
 
     // Click target DB
     let dbLink = await driver.findElement(
-      By.xpath("//a[contains(@href,'dev18-demo')]")
+      By.xpath("//a[contains(@href,'uat_plan_b_review')]")
     );
 
     await dbLink.click();
@@ -46,7 +46,7 @@ const main = async () => {
 
     // clear (if needed) and send keys
     await usernameInput.clear();
-    await usernameInput.sendKeys("odoo.erp@reach52.com");
+    await usernameInput.sendKeys("odoo.dev2@reach52.com");
 
     // optionally verify value
     const value = await usernameInput.getAttribute("value");
@@ -131,7 +131,7 @@ const main = async () => {
 
     await driver.wait(until.elementIsVisible(vendorName), 3000)
 
-    // clear (if needed) and send keys in search product
+    // clear (if needed) and send keys for vendor Name
     await vendorName.clear();
     await vendorName.sendKeys("MS GUPTA TEXTILES")
     await driver.sleep(4000)
@@ -143,16 +143,236 @@ const main = async () => {
 
     await driver.sleep(4000)
 
-    // click random things
-    const rngclick = await driver.wait(
+    //click email
+     const addEmail = await driver.wait(
+        until.elementLocated(By.id('email_0')), 
+        4000);
+
+    await driver.wait(until.elementIsVisible(addEmail), 3000)
+    addEmail.click();
+    console.log("Email is clicked")
+
+    // clear (if needed) and send keys in mobile
+    await addEmail.clear();
+    await addEmail.sendKeys("gupta@gmail.com")
+    await addEmail.sendKeys(Key.ENTER)
+    await driver.sleep(4000)
+
+    // optionally verify value
+    const emailValue = await addEmail.getAttribute("value");
+    console.log("email entered:", emailValue);
+
+    await driver.sleep(2000)
+
+    // add phone number
+    const addPhone = await driver.wait(
+        until.elementLocated(By.id('phone_0')), 
+        4000);
+
+    await driver.wait(until.elementIsVisible(addPhone), 3000)
+    addPhone.click();
+    console.log("Phone field is clicked")
+
+    // clear (if needed) and send keys in mobile
+    await addPhone.clear();
+    await addPhone.sendKeys("09185426378")
+    await addPhone.sendKeys(Key.ENTER)
+    await driver.sleep(4000)
+
+    // optionally verify value
+    const phoneValue = await addPhone.getAttribute("value");
+    console.log("Name of vendor entered:", phoneValue);
+
+
+    // click street
+    const addStreet = await driver.wait(
         until.elementLocated(By.css('input[placeholder="Street..."]')), 
         4000);
 
-    await driver.wait(until.elementIsVisible(rngclick), 3000)
-    rngclick.click();
-    console.log("Random field (Street) is clicked")
+    await driver.wait(until.elementIsVisible(addStreet), 3000)
+    addStreet.click();
+    console.log("Street is clicked")
+
+    // clear (if needed) and send keys in Street
+    await addStreet.clear();
+    await addStreet.sendKeys("VILLAGE MOGINAND NAHAN ROAD KALA AMB TESIL NAHAN DISTT. SIRMOUR")
+    await addStreet.sendKeys(Key.ENTER)
+    await driver.sleep(3000)
+
+    // optionally verify value
+    const streetValue = await addStreet.getAttribute("value");
+    console.log("Street entered:", streetValue);
+
+    await driver.sleep(3000)
+
+    // click street 2
+    const addStreet2 = await driver.wait(
+        until.elementLocated(By.css('input[placeholder="Street 2..."]')), 
+        4000);
+
+    await driver.wait(until.elementIsVisible(addStreet2), 3000)
+    addStreet2.click();
+    
+
+    // clear (if needed) and send keys in Street 2
+    await addStreet2.clear();
+    await addStreet2.sendKeys("MARUNGKO")
+    await addStreet2.sendKeys(Key.ENTER)
+    await driver.sleep(3000)
+
+    // optionally verify value
+    const street2Value = await addStreet2.getAttribute("value");
+    console.log("Street entered:", street2Value);
+
+    await driver.sleep(3000)
+
+    // click city
+    const addCity = await driver.wait(
+        until.elementLocated(By.css('input[placeholder="City"]')), 
+        4000);
+
+    await driver.wait(until.elementIsVisible(addCity), 3000)
+    addCity.click();
+    
+
+    /* clear (if needed) and send keys in search product
+    await addCity.clear();
+    await addCity.sendKeys("Olo")
+    await addCity.sendKeys(Key.ENTER)
+    await driver.sleep(3000) 
+
+    // optionally verify value
+    const cityValue = await addCity.getAttribute("value");
+    console.log("City entered:", cityValue); */
+
+    await driver.sleep(3000)
+
+    // add zip
+
+    const addZIP = await driver.wait(
+        until.elementLocated(By.css('input[placeholder="ZIP"]')), 
+        4000);
+
+    await driver.wait(until.elementIsVisible(addCity), 3000)
+    addZIP.click();
+    
+
+    // clear (if needed) and send keys in ZIP 
+    await addZIP.clear();
+    await addZIP.sendKeys("173030")
+    await addZIP.sendKeys(Key.ENTER)
+    await driver.sleep(3000)
+
+    // optionally verify value
+    const zipValue = await addZIP.getAttribute("value");
+    console.log("ZIP entered:", zipValue);
+
+    await driver.sleep(3000)
+
+    // add State
+    const addState = await driver.wait(
+        until.elementLocated(By.id('state_id_0')), 
+        4000);
+
+    await driver.wait(until.elementIsVisible(addState), 3000)
+    addState.click();
+
+    await driver.sleep(5000)
+
+    // select a state
+    const selectState = await driver.wait(
+        until.elementLocated(By.id('state_id_0_0_0')), 
+        4000);
+
+    await driver.wait(until.elementIsVisible(selectState), 4000)
+    selectState.click()
+
+    await driver.sleep(5000)
+
+    // add GST
+    const addGST = await driver.wait(
+        until.elementLocated(By.id('l10n_in_gst_treatment_0')), 
+        4000);
+
+    await driver.wait(until.elementIsVisible(addGST), 4000)
+    addGST.click()
+
+    await driver.sleep(3000)
+
+    // select GST
+    const selectGST = await driver.wait(
+        until.elementLocated(By.xpath("//span[.//div[text()='Registered Business - Regular']]")), 
+        4000);
+
+    await driver.wait(until.elementIsVisible(selectGST), 4000)
+    selectGST.click()
+    console.log("GST is clicked")
 
     await driver.sleep(4000)
+
+    // add website
+    const addWebsite = await driver.wait(
+        until.elementLocated(By.id('website_0')), 
+        4000);
+
+    await driver.wait(until.elementIsVisible(addWebsite), 4000)
+    addWebsite.click()
+
+    await driver.sleep(3000)
+
+    // clear (if needed) and send keys in Website
+    await addWebsite.clear();
+    await addWebsite.sendKeys("www.gupta.com")
+    await addWebsite.sendKeys(Key.ENTER)
+
+    await driver.sleep(3000)
+
+    // add Tags
+    const addTags = await driver.wait(
+        until.elementLocated(By.id('category_id_0')), 
+        4000);
+
+    await driver.wait(until.elementIsVisible(addTags), 4000)
+    addTags.click()
+
+
+    // create Tags
+    const createTags = await driver.wait(
+        until.elementLocated(By.id('category_id_0_0_0')), 
+        4000);
+
+    await driver.wait(until.elementIsVisible(createTags), 4000)
+    createTags.click()
+
+    await driver.sleep(4000)
+
+   // Add details for tags
+    const addDetailstTag = await driver.wait(
+        until.elementLocated(By.id('name_0')), 
+        4000);
+    
+    await driver.wait(until.elementIsVisible(addDetailstTag), 4000)
+    addDetailstTag.click()
+
+    // clear (if needed) and send keys in Tags Details
+    await addDetailstTag.clear();
+    await addDetailstTag.sendKeys("Consulting")
+    await addDetailstTag.sendKeys(Key.ENTER)
+    await driver.sleep(3000)
+
+    // optionally verify value
+    const tagsNameValue = await addStreet.getAttribute("value");
+    console.log("Tags name entered:", tagsNameValue);
+
+    await driver.sleep(3000)
+
+    // add tags category
+     const addCatTag = await driver.wait(
+        until.elementLocated(By.id('parent_id_0')), 
+        4000);
+    
+    await driver.wait(until.elementIsVisible(addCatTag), 4000)
+    addCatTag.click()
 
 
      } catch(err) {
