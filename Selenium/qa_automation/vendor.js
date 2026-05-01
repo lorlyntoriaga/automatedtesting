@@ -346,7 +346,7 @@ const main = async () => {
 
     await driver.sleep(4000)
 
-   // Add details for tags
+    /* Add details for tags
     const addDetailstTag = await driver.wait(
         until.elementLocated(By.id('name_0')), 
         4000);
@@ -356,9 +356,9 @@ const main = async () => {
 
     // clear (if needed) and send keys in Tags Details
     await addDetailstTag.clear();
-    await addDetailstTag.sendKeys("Consulting")
+    await addDetailstTag.sendKeys("Consulting Services")
     await addDetailstTag.sendKeys(Key.ENTER)
-    await driver.sleep(3000)
+    await driver.sleep(3000) 
 
     // optionally verify value
     const tagsNameValue = await addStreet.getAttribute("value");
@@ -372,8 +372,144 @@ const main = async () => {
         4000);
     
     await driver.wait(until.elementIsVisible(addCatTag), 4000)
-    addCatTag.click()
+    addCatTag.click() */
 
+    // click contact card
+    const addContact = driver.wait(
+        until.elementLocated(By.xpath("//div[contains(@class,'o-kanban-button-new') and normalize-space()='Add Contact']")),
+        4000)
+        
+
+    await driver.wait(until.elementIsVisible(addContact), 3000)
+    addContact.click()
+    console.log("Add contact is clicked")
+    
+    // Add Contact Name
+    const addNameContact = driver.wait(
+        until.elementLocated(By.id('name_0')),
+    3000)
+
+    await driver.wait(until.elementIsVisible(addNameContact), 5000)
+    addNameContact.click()
+    console.log("Name the contact is clicked")
+
+
+     // clear (if needed) and send keys in Website
+    await addNameContact.clear();
+    await addNameContact.sendKeys("Jessica Halpert")
+    await addNameContact.sendKeys(Key.ENTER)
+
+    // optionally verify value
+    const contactValue = await addNameContact.getAttribute("value");
+    console.log("ZIP entered:", contactValue);
+
+    await driver.sleep(3000)
+
+    // Add Contact Email
+    const addEmailContact = driver.wait(
+        until.elementLocated(By.id('email_0')),
+    3000)
+
+    await driver.wait(until.elementIsVisible(addEmailContact), 5000)
+    addEmailContact.click()
+    console.log("Email is clicked")
+
+
+     // clear (if needed) and send keys in Website
+    await addEmailContact.clear();
+    await addEmailContact.sendKeys("jessica@gmail.com")
+    await addEmailContact.sendKeys(Key.ENTER)
+
+    // optionally verify value
+    const emailContactValue = await addEmailContact.getAttribute("value");
+    console.log("Contact Name entered:", emailContactValue);
+
+    await driver.sleep(3000)
+
+    // Add Contact Phone number
+    const addContactPhone = driver.wait(
+        until.elementLocated(By.id('phone_0')),
+    3000)
+
+    await driver.wait(until.elementIsVisible(addContactPhone), 5000)
+    addContactPhone.click()
+    console.log("Contact Phone is clicked")
+
+
+     // clear (if needed) and send keys in Website
+    await addContactPhone.clear();
+    await addContactPhone.sendKeys("09154452387")
+    await addContactPhone.sendKeys(Key.ENTER)
+
+    // optionally verify value
+    const phoneContactValue = await addContactPhone.getAttribute("value");
+    console.log("Contact Phone entered:", phoneContactValue);
+
+    await driver.sleep(3000)
+
+    // Add a Job Title
+    const addJobTitle = driver.wait(
+        until.elementLocated(By.id('function_0')),
+    3000)
+
+    await driver.wait(until.elementIsVisible(addJobTitle), 5000)
+    addJobTitle.click()
+    console.log("Contact Job Title is clicked")
+
+
+     // clear (if needed) and send keys in Website
+    await addJobTitle.clear();
+    await addJobTitle.sendKeys("Sales Person")
+    await addJobTitle.sendKeys(Key.ENTER)
+
+    // optionally verify value
+    const jobValue = await addJobTitle.getAttribute("value");
+    console.log("Contact Job Title entered:", jobValue);
+
+    await driver.sleep(3000)
+
+    const contactSave = driver.wait(
+        until.elementLocated(By.xpath("//button[contains(@class,'o_form_button_save') and normalize-space()='Save & Close']")),
+    3000)
+
+    await driver.wait(until.elementIsVisible(contactSave), 5000)
+    contactSave.click()
+    console.log("Save the contact")
+
+    await driver.sleep(5000)
+
+    // click city
+    const salesTab = await driver.wait(
+        until.elementLocated(By.css("a[name='sales_purchases']")), 
+        4000);
+    
+    await driver.wait(until.elementIsVisible(salesTab), 5000)
+    salesTab.click()
+    console.log("Sales & Tab is clicked")
+
+    await driver.sleep(3000)
+
+    // Click Accounting Tab
+    const accountingTab = await driver.wait(
+        until.elementLocated(By.css("a[name='accounting']")), 
+        4000);
+    
+    await driver.wait(until.elementIsVisible(accountingTab), 5000)
+    accountingTab.click()
+    console.log("Accounting Tab is clicked")
+
+    await driver.sleep(3000)
+
+    // Click Notes Tab
+
+    const noteTab = await driver.wait(
+        until.elementLocated(By.css("a[name=internal_notes]")),
+    3000)
+
+    await driver.wait(until.elementLocated(noteTab), 4000)
+    noteTab.click()
+
+    await driver.sleep(3000)
 
      } catch(err) {
     console.error("test failed:", err);
