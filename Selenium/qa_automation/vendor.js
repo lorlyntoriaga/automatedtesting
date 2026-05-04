@@ -501,15 +501,69 @@ const main = async () => {
     await driver.sleep(3000)
 
     // Click Notes Tab
-
     const noteTab = await driver.wait(
-        until.elementLocated(By.css("a[name=internal_notes]")),
-    3000)
+        until.elementLocated(By.css("a[name='internal_notes']")), 
+        4000);
 
-    await driver.wait(until.elementLocated(noteTab), 4000)
+    await driver.wait(until.elementIsVisible(noteTab), 4000)
     noteTab.click()
+    console.log("Notes is clicked")
+    
 
     await driver.sleep(3000)
+
+    // Click Send Message button
+    const typeMessage = await driver.wait(
+        until.elementLocated(By.css('button.o-mail-Chatter-sendMessage')),
+        4000
+    ); 
+
+    await driver.wait(until.elementIsVisible(typeMessage), 7000);
+    await typeMessage.click();
+    
+    //await typeMessage.sendKeys('Hello Collana');
+
+    /* get the value of added message
+    const typeMessageValue = await typeMessage.getAttribute('value');
+    console.log('message entered', typeMessageValue)  */
+
+    await driver.sleep(5000);
+
+    // Click Log Button
+     const logButton = await driver.wait(
+        until.elementLocated(By.css('button.o-mail-Chatter-logNote')),
+        4000
+    ); 
+
+    await driver.wait(until.elementIsVisible(logButton), 7000);
+    await logButton.click();
+    console.log("Log is clicked")
+
+    await driver.sleep(5000);
+
+    // Click Activity button
+     const actButton = await driver.wait(
+        until.elementLocated(By.css('button.o-mail-Chatter-activity')),
+        4000
+    ); 
+
+    await driver.wait(until.elementIsVisible(actButton), 7000);
+    await actButton.click();
+    console.log("Activity button is clicked")
+
+    await driver.sleep(5000);
+
+    // CLick Save button
+     const saveButton = await driver.wait(
+        until.elementLocated(By.css('button.btn.btn-primary')),
+        4000
+    ); 
+
+    await driver.wait(until.elementIsVisible(saveButton), 7000);
+    await saveButton.click();
+    console.log("Save button is clicked")
+
+    await driver.sleep(5000);
 
      } catch(err) {
     console.error("test failed:", err);
