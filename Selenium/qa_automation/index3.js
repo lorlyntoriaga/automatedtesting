@@ -6,7 +6,7 @@ const fs = require('fs');
 const main = async () => {
     const driver = await new Builder().forBrowser(Browser.CHROME).build();
     
-    try{
+     try{
     await driver.get('https://odoo.uat.reach52.com/web/database/selector');
 
     // Shows page title and database
@@ -33,7 +33,7 @@ const main = async () => {
 
     // Click target DB
     let dbLink = await driver.findElement(
-      By.xpath("//a[contains(@href,'dev18-demo')]")
+      By.xpath("//a[contains(@href,'uat_plan_b_review')]")
     );
 
     await dbLink.click();
@@ -48,7 +48,7 @@ const main = async () => {
 
     // clear (if needed) and send keys
     await usernameInput.clear();
-    await usernameInput.sendKeys("odoo.erp@reach52.com");
+    await usernameInput.sendKeys("odoo.dev2@reach52.com");
 
     // optionally verify value
     const value = await usernameInput.getAttribute("value");
@@ -80,7 +80,8 @@ const main = async () => {
 
     await driver.sleep(2000);
 
-    // click Purchase App
+    // Click Purchase button
+     // click Purchase App
     const purchaseBtn = await driver.wait(
         until.elementLocated(By.id('result_app_5')),
         8000);
@@ -90,30 +91,6 @@ const main = async () => {
     console.log("Purchase button clicked");
 
     await driver.sleep(2000)
-
-    // Click Order menu
-    const orderbtn = await driver.wait(
-        until.elementLocated(By.css('button[data-menu-xmlid="purchase.menu_procurement_management"]')),
-        8000);
-
-    await driver.wait(until.elementIsVisible(orderbtn), 4000);
-    await orderbtn.click();
-    console.log("Order menu is clicked");
-
-    await driver.sleep(2000)
-
-    // Purhase Order
-    const purchaseorder = await driver.wait(
-        until.elementLocated(By.css('a[data-menu-xmlid="purchase.menu_purchase_form_action"]')),
-        8000);
-
-    await driver.wait(until.elementIsVisible(purchaseorder), 4000);
-
-    //  Step 3: Click using JavaScript (most reliable in Odoo)
-    await driver.executeScript("arguments[0].click();", purchaseorder);
-    console.log("Purchase Order menu is clicked")
-
-    await driver.sleep(4000)
 
     // new Purchase button
     const newPurcBtn = await driver.wait(
@@ -204,7 +181,7 @@ const main = async () => {
 
     await driver.sleep(3000)
 
-    // enter zip PO Code 
+    /* enter zip PO Code 
     const zip = await driver.wait(
         until.elementLocated(By.id('x_studio_ziperp_code_0')), 
         4000);
@@ -219,7 +196,7 @@ const main = async () => {
     const zipvalue = await zip.getAttribute("value");
     console.log("zip code entered", zipvalue);
 
-    await driver.sleep(3000)
+    await driver.sleep(3000) */
 
     // select a warehouse
     const delTo = await driver.wait(
@@ -370,22 +347,45 @@ const main = async () => {
 
     await driver.sleep(2000);
 
-     // Wait for popup input (DO NOT wait for visibility)
-    let emailInput = await driver.wait(
+
+     /*  Wait for popup input (DO NOT wait for visibility)
+    const emailInput = await driver.wait(
       until.elementLocated(By.css("input[placeholder='e.g. mail@example.com']")),
       10000
     );
 
-    // Force focus + type email
+    Force focus + type email
     await driver.executeScript(`
       arguments[0].focus();
       arguments[0].value = "test@example.com";
       arguments[0].dispatchEvent(new Event('input', { bubbles: true }));
     `, emailInput);
+    await driver.sleep(5000);
+    
+    console.log("Email entered"); */
 
-    console.log("Email entered");
+    // add message
+    const addEmail = await driver.wait(
+        until.elementLocated(By.css('textarea.o-mail-Composer-input')), 
+        4000);
 
-    // Click "Set Email" button
+    await driver.wait(until.elementIsVisible(addEmail), 10000);
+    await driver.wait(until.elementIsEnabled(addEmail), 10000);
+    addEmail.click();
+    
+
+    // clear (if needed) and send keys in ZIP 
+    await addEmail.clear();
+    await addEmail.sendKeys("This is a test internal note.")
+    await addEmail.sendKeys(Key.ENTER)
+    await driver.sleep(3000)
+
+    // optionally verify value
+    const emailValue = await addEmail.getAttribute("value");
+    console.log("Send message entered:", emailValue);
+
+
+    /* Click "Set Email" button
     const setEmailBtn = await driver.wait(
       until.elementLocated(By.xpath("//button[normalize-space()='Set Email']")),
       5000
@@ -411,6 +411,67 @@ const main = async () => {
     console.log('message entered', typeMessageValue) 
 
     await driver.sleep(2000); */
+
+    // Click Send Message button
+    const sendButton = await driver.wait(
+        until.elementLocated(By.css('button.o-mail-Composer-send')),
+        4000
+    ); 
+
+    await driver.wait(until.elementIsVisible(sendButton), 4000);
+    await sendButton.click();
+
+    await driver.sleep(5000);
+
+    // Click Log Button
+     const logButton = await driver.wait(
+        until.elementLocated(By.css('button.o-mail-Chatter-logNote')),
+        4000
+    ); 
+
+    await driver.wait(until.elementIsVisible(logButton), 7000);
+    await logButton.click();
+    console.log("Log is clicked")
+
+    await driver.sleep(5000);
+
+    const textarea = await driver.wait(
+      until.elementLocated(By.css('textarea[placeholder^="Log an internal note"]')),
+      15000
+    );
+
+    await driver.wait(until.elementIsVisible(textarea), 10000);
+
+    await driver.executeScript("arguments[0].scrollIntoView(true);", textarea);
+
+    await textarea.click();
+    await textarea.sendKeys("Hello from Selenium!");
+
+    await driver.sleep(3000)
+
+    // Click Activity button
+     const actButton = await driver.wait(
+        until.elementLocated(By.css('button.o-mail-Chatter-activity')),
+        4000
+    ); 
+
+    await driver.wait(until.elementIsVisible(actButton), 7000);
+    await actButton.click();
+    console.log("Activity button is clicked")
+
+    await driver.sleep(5000);
+
+     // CLick Save button
+     const saveButton = await driver.wait(
+        until.elementLocated(By.name('action_schedule_activities')),
+        4000
+    ); 
+
+    await driver.wait(until.elementIsVisible(saveButton), 7000);
+    await saveButton.click();
+    console.log("Save button is clicked")
+
+    await driver.sleep(5000);
 
 
     } catch(err) {

@@ -5,7 +5,7 @@ const main = async () => {
     const driver = await new Builder().forBrowser(Browser.CHROME).build();
     
     try{
-   await driver.get('https://odoo.uat.reach52.com/web/database/selector');
+    await driver.get('https://odoo.uat.reach52.com/web/database/selector');
 
     // Shows page title and database
     const dblistpage = await driver.getTitle()
@@ -248,12 +248,11 @@ const main = async () => {
     await driver.sleep(3000)
 
     // add zip
-
     const addZIP = await driver.wait(
         until.elementLocated(By.css('input[placeholder="ZIP"]')), 
         4000);
 
-    await driver.wait(until.elementIsVisible(addCity), 3000)
+    await driver.wait(until.elementIsVisible(addZIP), 3000)
     addZIP.click();
     
 
@@ -521,11 +520,6 @@ const main = async () => {
     await driver.wait(until.elementIsVisible(typeMessage), 7000);
     await typeMessage.click();
     
-    //await typeMessage.sendKeys('Hello Collana');
-
-    /* get the value of added message
-    const typeMessageValue = await typeMessage.getAttribute('value');
-    console.log('message entered', typeMessageValue)  */
 
     await driver.sleep(5000);
 
@@ -541,6 +535,28 @@ const main = async () => {
 
     await driver.sleep(5000);
 
+      // add log
+    const addLog = await driver.wait(
+        until.elementLocated(By.css('textarea.o-mail-Composer-input')), 
+        4000);
+
+    await driver.wait(until.elementIsVisible(addLog), 10000);
+    await driver.wait(until.elementIsEnabled(addLog), 10000);
+    addLog.click();
+    
+
+    // clear (if needed) and send keys in ZIP 
+    await addLog.clear();
+    await addLog.sendKeys("This is a test internal note.")
+    await addLog.sendKeys(Key.ENTER)
+    await driver.sleep(3000)
+
+    // optionally verify value
+    const logValue = await addLog.getAttribute("value");
+    console.log("Log entered:", logValue);
+
+    await driver.sleep(3000)
+
     // Click Activity button
      const actButton = await driver.wait(
         until.elementLocated(By.css('button.o-mail-Chatter-activity')),
@@ -555,7 +571,7 @@ const main = async () => {
 
     // CLick Save button
      const saveButton = await driver.wait(
-        until.elementLocated(By.css('button.btn.btn-primary')),
+        until.elementLocated(By.name('action_schedule_activities')),
         4000
     ); 
 

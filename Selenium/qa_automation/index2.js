@@ -31,7 +31,7 @@ const main = async () => {
 
     // Click target DB
     let dbLink = await driver.findElement(
-      By.xpath("//a[contains(@href,'dev18-demo')]")
+      By.xpath("//a[contains(@href,'uat_plan_b_review')]")
     );
 
     await dbLink.click();
@@ -46,7 +46,7 @@ const main = async () => {
 
     // clear (if needed) and send keys
     await usernameInput.clear();
-    await usernameInput.sendKeys("odoo.erp@reach52.com");
+    await usernameInput.sendKeys("odoo.dev2@reach52.com");
 
     // optionally verify value
     const value = await usernameInput.getAttribute("value");
@@ -228,6 +228,8 @@ const main = async () => {
      console.log("Confirm Purchase button clicked");
 
     await driver.sleep(5000)
+
+
 
 
     } catch(err) {
