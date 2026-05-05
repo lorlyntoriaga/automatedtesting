@@ -79,7 +79,7 @@ const main = async () => {
     await driver.sleep(2000);
 
 
-     // click Purchase App
+    // click Purchase App
     const purchaseBtn = await driver.wait(
         until.elementLocated(By.id('result_app_5')),
         8000);
@@ -131,7 +131,7 @@ const main = async () => {
 
     await driver.wait(until.elementIsVisible(vendorName), 3000)
 
-    // clear (if needed) and send keys for vendor Name
+    // clear (if needed) and send keys for Vendor Name
     await vendorName.clear();
     await vendorName.sendKeys("MS GUPTA TEXTILES")
     await driver.sleep(4000)
@@ -152,7 +152,7 @@ const main = async () => {
     addEmail.click();
     console.log("Email is clicked")
 
-    // clear (if needed) and send keys in mobile
+    // clear (if needed) and send keys in email
     await addEmail.clear();
     await addEmail.sendKeys("gupta@gmail.com")
     await addEmail.sendKeys(Key.ENTER)
@@ -393,7 +393,7 @@ const main = async () => {
     console.log("Name the contact is clicked")
 
 
-     // clear (if needed) and send keys in Website
+     // clear (if needed) and send keys i  Name of Contact
     await addNameContact.clear();
     await addNameContact.sendKeys("Jessica Halpert")
     await addNameContact.sendKeys(Key.ENTER)
@@ -414,7 +414,7 @@ const main = async () => {
     console.log("Email is clicked")
 
 
-     // clear (if needed) and send keys in Website
+     // clear (if needed) and send keys in Contact's email
     await addEmailContact.clear();
     await addEmailContact.sendKeys("jessica@gmail.com")
     await addEmailContact.sendKeys(Key.ENTER)
@@ -435,7 +435,7 @@ const main = async () => {
     console.log("Contact Phone is clicked")
 
 
-     // clear (if needed) and send keys in Website
+     // clear (if needed) and send keys in number
     await addContactPhone.clear();
     await addContactPhone.sendKeys("09154452387")
     await addContactPhone.sendKeys(Key.ENTER)
@@ -456,7 +456,7 @@ const main = async () => {
     console.log("Contact Job Title is clicked")
 
 
-     // clear (if needed) and send keys in Website
+     // clear (if needed) and send keys in Job Title
     await addJobTitle.clear();
     await addJobTitle.sendKeys("Sales Person")
     await addJobTitle.sendKeys(Key.ENTER)
@@ -545,7 +545,7 @@ const main = async () => {
     addLog.click();
     
 
-    // clear (if needed) and send keys in ZIP 
+    // clear (if needed) and send keys in add Log 
     await addLog.clear();
     await addLog.sendKeys("This is a test internal note.")
     await addLog.sendKeys(Key.ENTER)
