@@ -374,7 +374,7 @@ const main = async () => {
     addEmail.click();
     
 
-    // clear (if needed) and send keys in ZIP 
+    // clear (if needed) and send keys in send message field
     await addEmail.clear();
     await addEmail.sendKeys("This is a test internal note.")
     await addEmail.sendKeys(Key.ENTER)

@@ -227,7 +227,7 @@ const main = async () => {
     await driver.sleep(4000)
     await categoryName.sendKeys(Key.ENTER)
 
-    await driver.sleep(3000)
+    await driver.sleep(4000)
 
     // Click Removal Strategy
     const clickRemStrat = await driver.wait(
@@ -235,11 +235,16 @@ const main = async () => {
         4000);
 
     await driver.wait(until.elementIsVisible(clickRemStrat), 3000)
+    await clickRemStrat.click();
+    console.log("Click 'Removal Strategy dropdown");
+
+    await driver.sleep(3000)
+
 
     // Select Removal Strategy
     const selectRemStrat = await driver.wait(
         until.elementLocated(By.id('removal_strategy_id_0_0_0')), 
-        3000);
+        4000);
 
     await driver.wait(until.elementIsVisible(selectRemStrat), 3000)
     await selectRemStrat.click();
@@ -249,7 +254,7 @@ const main = async () => {
 
     // Save Category
     const saveCategory = await driver.wait(
-        until.elementLocated(By.css('button.o_form_button_save')), 
+        until.elementLocated(By.css('button.btn.btn-primary.o_form_button_save')), 
         5000);
 
     await driver.wait(until.elementIsVisible(saveCategory), 3000)
@@ -272,6 +277,203 @@ const main = async () => {
     await prodRef.sendKeys(Key.ENTER)
 
     await driver.sleep(3000)
+
+    // Click Attributes and Variants
+    const variantsTab = await driver.wait(
+        until.elementLocated(By.css("a[name='variants']")), 
+        4000);
+    
+    await driver.wait(until.elementIsVisible(variantsTab), 5000)
+    variantsTab.click()
+    console.log("Attributes and Variants Tab is clicked")
+
+    await driver.sleep(3000)
+
+    // Click Sales Tab
+    const salesTab = await driver.wait(
+        until.elementLocated(By.css("a[name='sales']")), 
+        4000);
+    
+    await driver.wait(until.elementIsVisible(salesTab), 5000)
+    salesTab.click()
+    console.log("Sales Tab is clicked")
+
+    await driver.sleep(3000)
+
+    // Click Price Tab
+    const priceTab = await driver.wait(
+        until.elementLocated(By.css("a[name='sales_price']")), 
+        4000);
+    
+    await driver.wait(until.elementIsVisible(priceTab), 5000)
+    priceTab.click()
+    console.log("Price Tab is clicked")
+
+    await driver.sleep(3000)
+
+    // Click Purchase Tab
+    const purchaseTab = await driver.wait(
+        until.elementLocated(By.css("a[name='purchase']")), 
+        4000);
+    
+    await driver.wait(until.elementIsVisible(purchaseTab), 5000)
+    purchaseTab.click()
+    console.log("Purchase Tab is clicked")
+
+    await driver.sleep(3000)
+
+    // Click Inventory Tab
+    const inventoryTab = await driver.wait(
+        until.elementLocated(By.css("a[name='inventory']")), 
+        4000);
+    
+    await driver.wait(until.elementIsVisible(inventoryTab), 5000)
+    inventoryTab.click()
+    console.log("Inventory Tab is clicked")
+
+    await driver.sleep(3000)
+
+     // Click Accounting Tab
+    const accTab = await driver.wait(
+        until.elementLocated(By.css("a[name='invoicing']")), 
+        4000);
+    
+    await driver.wait(until.elementIsVisible(accTab), 5000)
+    accTab.click()
+    console.log("Accounting Tab is clicked")
+
+    await driver.sleep(3000)
+
+    // Click General Information
+     const genInfoTab = await driver.wait(
+        until.elementLocated(By.css("a[name='general_information']")), 
+        4000);
+    
+    await driver.wait(until.elementIsVisible(genInfoTab), 5000)
+    genInfoTab.click()
+    console.log("General Information Tab is clicked")
+
+    await driver.sleep(3000)
+
+    // save internal notes
+    const paragraphDiv = await driver.wait(
+      until.elementLocated(
+        By.css('div.o-paragraph.o-we-hint[o-we-hint-text]')
+      ),
+      10000
+    );
+
+    // Example: click or send keys
+    await paragraphDiv.click();
+    await paragraphDiv.sendKeys('Hello world');
+
+
+    // Click Send Message button
+    const sendMessage = await driver.wait(
+        until.elementLocated(By.css('button.o-mail-Chatter-sendMessage')),
+        4000
+    ); 
+
+    await driver.wait(until.elementIsVisible(sendMessage), 4000);
+    await sendMessage.click();
+    console.log("Send button is clicked")
+
+    /* Wait for popup input (DO NOT wait for visibility)
+    const emailInput = await driver.wait(
+      until.elementLocated(By.css("input[placeholder='e.g. mail@example.com']")),
+      10000
+    );
+
+    // Force focus + type email
+    await driver.executeScript(`
+      arguments[0].focus();
+      arguments[0].value = "test@example.com";
+      arguments[0].dispatchEvent(new Event('input', { bubbles: true }));
+    `, emailInput);
+    await driver.sleep(5000);
+    
+    console.log("Email entered");  */
+
+     // add message
+    const addEmail = await driver.wait(
+        until.elementLocated(By.css('textarea.o-mail-Composer-input')), 
+        4000);
+
+    await driver.wait(until.elementIsVisible(addEmail), 10000);
+    await driver.wait(until.elementIsEnabled(addEmail), 10000);
+    addEmail.click();
+    
+
+    // clear (if needed) and send keys in Send Message field
+    await addEmail.clear();
+    await addEmail.sendKeys("This is a test internal note.")
+    await addEmail.sendKeys(Key.ENTER)
+    await driver.sleep(3000)
+
+    // optionally verify value
+    const emailValue = await addEmail.getAttribute("value");
+    console.log("Send message entered:", emailValue);
+
+      // Click Send Message button
+    const sendButton = await driver.wait(
+        until.elementLocated(By.css('button.o-mail-Composer-send')),
+        4000
+    ); 
+
+    await driver.wait(until.elementIsVisible(sendButton), 4000);
+    await sendButton.click();
+
+    await driver.sleep(3000);
+
+    // Click Log Button
+     const logButton = await driver.wait(
+        until.elementLocated(By.css('button.o-mail-Chatter-logNote')),
+        4000
+    ); 
+
+    await driver.wait(until.elementIsVisible(logButton), 7000);
+    await logButton.click();
+    console.log("Log is clicked")
+
+    await driver.sleep(3000);
+
+    const textarea = await driver.wait(
+      until.elementLocated(By.css('textarea[placeholder^="Log an internal note"]')),
+      15000
+    );
+
+    await driver.wait(until.elementIsVisible(textarea), 10000);
+
+    await driver.executeScript("arguments[0].scrollIntoView(true);", textarea);
+
+    await textarea.click();
+    await textarea.sendKeys("Hello from Selenium!");
+
+    await driver.sleep(3000)
+
+    // Click Activity button
+     const actButton = await driver.wait(
+        until.elementLocated(By.css('button.o-mail-Chatter-activity')),
+        4000
+    ); 
+
+    await driver.wait(until.elementIsVisible(actButton), 7000);
+    await actButton.click();
+    console.log("Activity button is clicked")
+
+    await driver.sleep(5000);
+
+     // CLick Save button
+     const saveButton = await driver.wait(
+        until.elementLocated(By.name('action_schedule_activities')),
+        4000
+    ); 
+
+    await driver.wait(until.elementIsVisible(saveButton), 7000);
+    await saveButton.click();
+    console.log("Save button is clicked")
+
+    await driver.sleep(4000);
     
 
     } catch(err) {
