@@ -1,4 +1,4 @@
-const {By, Builder, Browser, until} = require('selenium-webdriver');
+const {By, Builder, Browser, until, Key} = require('selenium-webdriver');
 const { elementLocated, elementIsVisible } = require('selenium-webdriver/lib/until');
 
 const main = async () => {
@@ -188,7 +188,7 @@ const main = async () => {
     await driver.wait(until.elementIsVisible(clickProductSearch), 5000);
     await clickProductSearch.click();
 
-    await driver.sleep(2000)
+    await driver.sleep(4000)
 
     // click quantity
     const addQuantity = await driver.wait(
@@ -215,20 +215,19 @@ const main = async () => {
     console.log("quantity entered:", quantityValue);
 
 
-    await driver.sleep(2000)
+    await driver.sleep(4000)
 
-    // Confirm Purchase
-    const confirmPurchaseBtn = await driver.wait(
-        until.elementLocated(By.id('draft_confirm')),
-        10000
-    );
+    // Confirm the RFQ
+        const saveBtn = await driver.wait(
+            until.elementLocated(
+                By.css('button.o_form_button_save[data-tooltip="Save manually"]')
+            ),
+            10000
+        );
 
-    await driver.wait(until.elementIsVisible(confirmPurchaseBtn), 5000);
-    await confirmPurchaseBtn.click();
-     console.log("Confirm Purchase button clicked");
-
-    await driver.sleep(5000)
-
+        // Click the save button
+        await saveBtn.click();
+        console.log("RFQ is created")
 
 
 
