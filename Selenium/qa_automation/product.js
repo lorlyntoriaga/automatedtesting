@@ -521,7 +521,7 @@ const main = async () => {
 
         // Example: click or send keys
         await paragraphDiv.click();
-        await paragraphDiv.sendKeys('Hello world');
+        await paragraphDiv.sendKeys('Hello');
 
 
         // Click Send Message button
@@ -562,7 +562,7 @@ const main = async () => {
 
         // clear (if needed) and send keys in Send Message field
         await addEmail.clear();
-        await addEmail.sendKeys("This is a test internal note.")
+        await addEmail.sendKeys("Priority note")
         await addEmail.sendKeys(Key.ENTER)
         await driver.sleep(3000)
 
