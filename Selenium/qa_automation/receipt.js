@@ -524,17 +524,71 @@ const main = async () => {
 
         await driver.sleep(3000);
 
-    // Go to Inventory
-        const invRecTab = await driver.wait(
-            until.elementLocated(By.name('inventory')), 
+    // Go to General Information tab to check the Track Inventory
+        const genTab = await driver.wait(
+            until.elementLocated(By.name('general_information')), 
             4000
         )
 
-        await driver.wait(until.elementIsVisible(invRecTab), 7000);
-        await invRecTab.click();
-        console.log("Go to Inventory Tab")
+        await driver.wait(until.elementIsVisible(genTab), 7000);
+        await genTab.click();
+        console.log("Go to General Information Tab")
 
         await driver.sleep(3000);
+
+    // Click Tracking field
+        const tracking = await driver.wait(
+            until.elementLocated(By.name('tracking_1')), 
+            4000
+        )
+
+        await driver.wait(until.elementIsVisible(tracking), 7000);
+        await tracking.click();
+        console.log("Click the tracking field")
+
+        await driver.sleep(4000);
+
+    // Select Lots for tracking
+     const lotsOpt = await driver.wait(
+            until.elementLocated(By.xpath("//span[contains(@class,'o_select_menu_item')]//div[text()='By Lots']")), 
+            4000
+        )
+
+        await driver.wait(until.elementIsVisible(lotsOpt), 7000);
+        await lotsOpt.click();
+        console.log("Select Lots for Tracking")
+
+        await driver.sleep(4000);
+
+    // Click Inventory Tab
+         const inventoryTab = await driver.wait(
+            until.elementLocated(By.css("a[name='inventory']")), 
+            4000);
+        
+        await driver.wait(until.elementIsVisible(inventoryTab), 5000)
+        inventoryTab.click()
+        console.log("Inventory Tab is clicked")
+
+        await driver.sleep(4000)
+    
+    // Check the Traceability expiration date checkbox
+        // Locate the checkbox
+        const expcb = await driver.wait(
+            until.elementLocated(By.id("use_expiration_date_0")), 
+            4000);
+
+        // Check if not already checked
+        const isChecked = await expcb.isSelected();
+
+        if (!isChecked) {
+            await driver.executeScript(
+                "arguments[0].click();",
+                expcb
+            );
+        }
+
+        await driver.sleep(4000)
+
 
     // Add Expiration Date
         const exp = await driver.wait(
@@ -593,7 +647,7 @@ const main = async () => {
         await alertProd.click();
         await alertProd.sendKeys("45")
         await alertProd.sendKeys(Key.ENTER)
-        console.log("Add Alert   Date")
+        console.log("Add Alert Date")
 
         await driver.sleep(5000);
 
