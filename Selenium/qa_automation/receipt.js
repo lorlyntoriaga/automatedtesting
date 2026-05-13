@@ -524,7 +524,7 @@ const main = async () => {
 
         await driver.sleep(3000);
 
-    // Go to General Information tab to check the Track Inventory
+    /* Go to General Information tab to check the Track Inventory
         const genTab = await driver.wait(
             until.elementLocated(By.name('general_information')), 
             4000
@@ -538,7 +538,7 @@ const main = async () => {
 
     // Click Tracking field
         const tracking = await driver.wait(
-            until.elementLocated(By.name('tracking_1')), 
+            until.elementLocated(By.id('tracking_1')), 
             4000
         )
 
@@ -558,7 +558,7 @@ const main = async () => {
         await lotsOpt.click();
         console.log("Select Lots for Tracking")
 
-        await driver.sleep(4000);
+        await driver.sleep(4000); */
 
     // Click Inventory Tab
          const inventoryTab = await driver.wait(
@@ -643,7 +643,7 @@ const main = async () => {
             4000
         )
 
-        await driver.wait(until.elementIsVisible(alertProd), 7000);
+        await driver.wait(until.elementIsVisible(alertProd), 6000);
         await alertProd.click();
         await alertProd.sendKeys("45")
         await alertProd.sendKeys(Key.ENTER)
@@ -656,11 +656,86 @@ const main = async () => {
             until.elementLocated(
                 By.css('button.o_form_button_save[data-tooltip="Save manually"]')
             ),
-            10000
+            6000
         );
 
         // Click the save button
         await saveBtn.click();
+        console.log('Save manually')
+
+        await driver.sleep(4000);
+        await driver.navigate().back();
+
+        await driver.sleep(4000);
+
+        // Check the details of the product in Receipt screen
+        const goToDetLot = await driver.wait(
+            until.elementLocated(By.xpath("//button[@name='action_show_details']")),
+            4000
+        )
+
+        await driver.wait(until.elementIsVisible(goToDetLot), 7000);
+        await goToDetLot.click();
+        console.log("Go to Product details")
+        await driver.sleep(4000);
+
+
+    // Wait for the button to appear
+        const generateLot = await driver.wait(
+            until.elementLocated(
+                By.xpath("//div[contains(@class,'o_widget_generate_serials')]//button")
+            ),
+            6000
+        );
+
+        // Click the button
+        await generateLot.click();
+
+        console.log("Generate Serials/Lots button clicked");
+
+    // Click and Add lot serial number
+         const lotSerial = await driver.wait(
+            until.elementLocated(By.id('next_serial_0')), 
+            4000
+        )
+
+        await driver.wait(until.elementIsVisible(lotSerial), 7000);
+        await lotSerial.click();
+        await lotSerial.sendKeys("LOT-PAR-0001")
+        await lotSerial.sendKeys(Key.ENTER)
+        console.log("Add Lot/Serial Number")
+
+        await driver.sleep(5000);
+
+    // Wait for the Generate button
+        const generateButton = await driver.wait(
+            until.elementLocated(
+                By.xpath("//footer//button[contains(text(),'Generate')]")
+            ),
+            6000
+        );
+
+        // Click the Generate button
+        await generateButton.click();
+        console.log("Generate button clicked");
+        await driver.sleep(5000);
+
+    // Wait for the Save button
+        const saveButton = await driver.wait(
+            until.elementLocated(
+                By.xpath("//button[contains(@class,'o_form_button_save')]")
+            ),
+            10000
+        );
+
+        // Click the Save button
+        await saveButton.click(); 
+        console.log("Save button clicked");
+
+        await driver.sleep(5000);
+
+        
+
 
     } catch(err) {
     console.error("test failed:", err);
