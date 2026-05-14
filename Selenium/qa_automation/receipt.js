@@ -756,9 +756,7 @@ const main = async () => {
 
     /// Wait until the year 2030 element is present
         const year2030 = await driver.wait(
-            until.elementLocated(
-                By.xpath('//div[contains(@class,"o_date_item_cell") and text()="2030"]')
-            ),
+            until.elementLocated(By.xpath('//div[contains(@class,"o_date_item_cell") and text()="2030"]')),
             6000
         );
 
@@ -777,9 +775,7 @@ const main = async () => {
 
     // Wait for the month "Oct"
         const octMonth = await driver.wait(
-            until.elementLocated(
-                By.xpath('//div[contains(@class,"o_date_item_cell") and text()="Nov"]')
-            ),
+            until.elementLocated(By.xpath('//div[contains(@class,"o_date_item_cell") and text()="Nov"]')),
             6000
         );
 
@@ -802,9 +798,7 @@ const main = async () => {
 
     //  Wait for the Apply button using its text
         const applyButton = await driver.wait(
-            until.elementLocated(
-                By.xpath('//button[.//span[text()="Apply"]]') 
-            ),
+            until.elementLocated(By.xpath('//button[.//span[text()="Apply"]]')),
             6000
         );
 
@@ -832,9 +826,7 @@ const main = async () => {
 
     // Wait for Save button using class + text
         const saveDetails = await driver.wait(
-            until.elementLocated(
-                By.xpath('//button[contains(@class,"o_form_button_save") and normalize-space()="Save"]')
-            ),
+            until.elementLocated(By.xpath('//button[contains(@class,"o_form_button_save") and normalize-space()="Save"]')),
             6000
         );
 
@@ -849,6 +841,75 @@ const main = async () => {
         console.log('Save button clicked successfully.');
         await driver.sleep(5000);
 
+    // Scroll horizontally
+    // Wait for table renderer
+        const tableContainer = await driver.wait(
+            until.elementLocated(
+                By.css('.o_list_renderer')
+            ),
+            5000
+        );
+
+        // Scroll horizontally to the RIGHT
+        await driver.executeScript(`
+            arguments[0].scrollLeft = arguments[0].scrollWidth;
+        `, tableContainer);
+
+        // OPTIONAL: wait a little after scrolling
+        await driver.sleep(1000);  
+
+    // From Owner
+    // Wait until the input field is visible
+        const clickFromOwner = await driver.wait(
+            until.elementLocated(By.css('td[name="owner_id"]')),
+            4000
+        );
+
+    // Scroll into view (optional)
+        await driver.executeScript(
+            "arguments[0].scrollIntoView(true);",
+            clickFromOwner
+        );
+        await driver.sleep(4000);
+
+    // Click the td element
+        await clickFromOwner.click();
+        await driver.sleep(4000); 
+
+
+    // Select searched product
+        const fromOwner = await driver.wait(
+            until.elementLocated(By.id('autocomplete_0_1'), 
+            4000))
+
+        await driver.wait(until.elementIsVisible(fromOwner), 4000);
+        await fromOwner.click();
+
+        await driver.sleep(2000)
+
+    // Add quantity input field
+        const quantityInput = await driver.wait(
+            until.elementLocated(
+                By.css('td[name="quantity"] input.o_input')
+            ),
+            8000
+        );
+
+    // Scroll into view
+        await driver.executeScript(
+            "arguments[0].scrollIntoView({block:'center'});",
+            quantityInput
+        );
+
+        await driver.sleep(4000); 
+    
+        // Clear existing value
+        await quantityInput.clear();
+
+        // Enter quantity
+        await quantityInput.sendKeys('10');
+        await driver.sleep(4000); 
+        console.log('Quantity entered successfully.');
 
 
     } catch(err) {
