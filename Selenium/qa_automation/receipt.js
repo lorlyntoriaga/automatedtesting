@@ -223,19 +223,17 @@ const main = async () => {
 
         await driver.sleep(3000)
 
-     // 2. Select day 15
-        const date15 = await driver.wait(
+     // 2. Select day 18
+        const date18 = await driver.wait(
         until.elementLocated(
-            By.xpath("//div[contains(@class,'o_date_item_cell') and .//div[text()='15']]")
-        ),
+            By.xpath("//div[contains(@class,'o_date_item_cell') and .//div[text()='18']]")),
         8000
         );
 
-        await driver.wait(until.elementIsVisible(date15), 4000);
-        await driver.wait(until.elementIsEnabled(date15), 4000);
-
-        await date15.click();
-        console.log('Select date 15')
+        await driver.wait(until.elementIsVisible(date18), 4000);
+        await driver.wait(until.elementIsEnabled(date18), 4000);
+        await date18.click();
+        console.log('Select date 18')
 
    
         /* select expected arrival date picker
@@ -653,9 +651,7 @@ const main = async () => {
 
     // Confirm the RFQ
         const saveBtn = await driver.wait(
-            until.elementLocated(
-                By.css('button.o_form_button_save[data-tooltip="Save manually"]')
-            ),
+            until.elementLocated(By.css('button.o_form_button_save[data-tooltip="Save manually"]')),
             6000
         );
 
@@ -663,10 +659,10 @@ const main = async () => {
         await saveBtn.click();
         console.log('Save manually')
 
-        await driver.sleep(4000);
+        await driver.sleep(3000);
         await driver.navigate().back();
-
-        await driver.sleep(4000);
+        await driver.sleep(3000);
+        
 
         // Check the details of the product in Receipt screen
         const goToDetLot = await driver.wait(
@@ -682,16 +678,15 @@ const main = async () => {
 
     // Wait for the button to appear
         const generateLot = await driver.wait(
-            until.elementLocated(
-                By.xpath("//div[contains(@class,'o_widget_generate_serials')]//button")
-            ),
-            6000
+            until.elementLocated(By.xpath("//div[contains(@class,'o_widget_generate_serials')]//button")),
+            4000
         );
 
         // Click the button
         await generateLot.click();
-
         console.log("Generate Serials/Lots button clicked");
+        await driver.sleep(3000);
+
 
     // Click and Add lot serial number
          const lotSerial = await driver.wait(
@@ -704,37 +699,156 @@ const main = async () => {
         await lotSerial.sendKeys("LOT-PAR-0001")
         await lotSerial.sendKeys(Key.ENTER)
         console.log("Add Lot/Serial Number")
-
-        await driver.sleep(5000);
+        await driver.sleep(3000);
 
     // Wait for the Generate button
         const generateButton = await driver.wait(
+            until.elementLocated(By.xpath("//footer//button[contains(text(),'Generate')]")),
+            4000
+        );
+
+        await driver.sleep(3000);
+
+    // Click the Generate button
+        await generateButton.click();
+        console.log("Generate button clicked");
+        await driver.sleep(3000);
+
+    // Product Expiration date
+    // Wait until the input field is visible
+        const expirationDateInput = await driver.wait(
+            until.elementLocated(By.css('td[name="expiration_date"]')),
+            4000
+        );
+
+    // Scroll into view (optional)
+        await driver.executeScript(
+            "arguments[0].scrollIntoView(true);",
+            expirationDateInput
+        );
+        await driver.sleep(4000);
+
+    // Click the td element
+        await expirationDateInput.click();
+
+    // Locate month using title attribute
+        const monthButton = await driver.wait(
+            until.elementLocated(By.css('button[title="Select month"]')),
+            6000
+        );
+    
+        // Click the button
+        await monthButton.click();
+        console.log('Select month clicked successfully.');
+        await driver.sleep(3000);
+
+
+    // Locate year using title attribute 
+        const yearButton = await driver.wait(
+            until.elementLocated(By.css('button[title="Select year"]')),
+            6000
+        );
+
+    // Click the button
+        await monthButton.click();
+        await driver.sleep(3000);
+        console.log('Select year clicked successfully.');
+
+    /// Wait until the year 2030 element is present
+        const year2030 = await driver.wait(
             until.elementLocated(
-                By.xpath("//footer//button[contains(text(),'Generate')]")
+                By.xpath('//div[contains(@class,"o_date_item_cell") and text()="2030"]')
             ),
             6000
         );
 
-        // Click the Generate button
-        await generateButton.click();
-        console.log("Generate button clicked");
-        await driver.sleep(5000);
-
-    // Wait for the Save button
-        const saveButton = await driver.wait(
-            until.elementLocated(
-                By.xpath("//button[contains(@class,'o_form_button_save')]")
-            ),
-            10000
+    // Scroll into view (optional)
+        await driver.executeScript(
+            "arguments[0].scrollIntoView({block:'center'});",
+            year2030
         );
 
-        // Click the Save button
-        await saveButton.click(); 
-        console.log("Save button clicked");
+    // Click the year 2030
+        await year2030.click();
+        await driver.sleep(3000);
+        console.log('Year 2030 selected successfully.');
 
+        await driver.sleep(3000);
+
+    // Wait for the month "Oct"
+        const octMonth = await driver.wait(
+            until.elementLocated(
+                By.xpath('//div[contains(@class,"o_date_item_cell") and text()="Nov"]')
+            ),
+            6000
+        );
+
+    // Click the month
+        await octMonth.click();
+        console.log('Month Nov selected successfully.');
+
+        await driver.sleep(4000);
+
+    
+    // STEP 5 — Select day 30
+        const day30 = await driver.wait(
+            until.elementLocated(By.xpath("//div[contains(@class,'o_date_item_cell') and .//div[text()='30']]")),
+            6000
+        );
+
+        await day30.click();
+        console.log('November 30, 2030 selected successfully.');
+        await driver.sleep(4000);
+
+    //  Wait for the Apply button using its text
+        const applyButton = await driver.wait(
+            until.elementLocated(
+                By.xpath('//button[.//span[text()="Apply"]]') 
+            ),
+            6000
+        );
+
+        await driver.sleep(4000);
+
+    // Ensure it is visible
+        await driver.wait(
+            until.elementIsVisible(applyButton),
+            5000
+        );
+
+    // Scroll into view (optional but useful in Odoo UI)
+        await driver.executeScript(
+            "arguments[0].scrollIntoView({block:'center'});",
+            applyButton
+        );
+
+        await driver.sleep(3000);
+
+    // Click Apply button
+        await applyButton.click();
+
+        console.log('Apply button clicked successfully.');   
+        await driver.sleep(4000); 
+
+    // Wait for Save button using class + text
+        const saveDetails = await driver.wait(
+            until.elementLocated(
+                By.xpath('//button[contains(@class,"o_form_button_save") and normalize-space()="Save"]')
+            ),
+            6000
+        );
+
+        // Scroll into view (optional)
+        await driver.executeScript(
+            "arguments[0].scrollIntoView({block:'center'});",
+            saveDetails
+        );
+
+        // Click Save button
+        await saveDetails.click();
+        console.log('Save button clicked successfully.');
         await driver.sleep(5000);
 
-        
 
 
     } catch(err) {
