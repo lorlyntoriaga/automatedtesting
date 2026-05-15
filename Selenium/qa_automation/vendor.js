@@ -101,14 +101,14 @@ const main = async () => {
 
     await driver.sleep(2000)
 
-    // Purhase Order
+    // Vendor menu
     const vendor = await driver.wait(
         until.elementLocated(By.css('a[data-menu-xmlid="purchase.menu_procurement_management_supplier_name"]')),
         8000);
 
     await driver.wait(until.elementIsVisible(vendor), 4000);
 
-    //  Step 3: Click using JavaScript (most reliable in Odoo)
+    //  Click using JavaScript (most reliable in Odoo)
     await driver.executeScript("arguments[0].click();", vendor);
     console.log("Purchase Order menu is clicked")
 

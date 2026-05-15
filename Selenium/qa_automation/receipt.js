@@ -8,6 +8,14 @@ const main = async () => {
 
         await driver.get('https://odoo.uat.reach52.com/web/database/selector');
 
+        // Maximize browser window
+        driver.manage().window().maximize();
+        await driver.sleep(2000);
+        await driver.executeScript(
+            "window.scrollBy(0, 500);"
+        );
+        await driver.sleep(3000);
+
         // Shows page title and database
         const dblistpage = await driver.getTitle()
         console.log('database list page', dblistpage)
@@ -87,7 +95,7 @@ const main = async () => {
 
         await driver.wait(until.elementIsVisible(purchaseBtn), 4000);
         await purchaseBtn.click();
-        console.log("Purchase button clicked");
+        console.log("Purchase App clicked");
 
         await driver.sleep(2000)
 
@@ -153,30 +161,29 @@ const main = async () => {
         await crtVendorRef.click();
         console.log('Vendor Ref field is click and added');
 
-        await driver.sleep(7000)
+        await driver.sleep(5000)
 
         const currency = await driver.wait(
             until.elementLocated(By.id('currency_id_0')), 
             5000);
 
-        await driver.wait(until.elementIsVisible(currency), 4000);
-
     //to clear currency (if needed) and send keys
         await currency.clear();
+        await driver.sleep(3000)
         await currency.sendKeys("INR");
 
     // optionally verify value of currency
         const currValue = await currency.getAttribute("value");
         console.log("currency entered:", currValue);
 
-        await driver.sleep(3000)
+        await driver.sleep(4000);
 
         const selectCurrency = await driver.wait(
             until.elementLocated(By.id('currency_id_0_0_0')), 
-            4000
+            5000
         );
 
-        await driver.wait(until.elementIsVisible(selectCurrency), 4000)
+        await driver.wait(until.elementIsVisible(selectCurrency), 5000)
         await selectCurrency.click();
         console.log("INR is selected");
 
@@ -824,46 +831,15 @@ const main = async () => {
         console.log('Apply button clicked successfully.');   
         await driver.sleep(4000); 
 
-    // Wait for Save button using class + text
-        const saveDetails = await driver.wait(
-            until.elementLocated(By.xpath('//button[contains(@class,"o_form_button_save") and normalize-space()="Save"]')),
-            6000
-        );
-
-        // Scroll into view (optional)
-        await driver.executeScript(
-            "arguments[0].scrollIntoView({block:'center'});",
-            saveDetails
-        );
-
-        // Click Save button
-        await saveDetails.click();
-        console.log('Save button clicked successfully.');
-        await driver.sleep(5000);
-
-    // Scroll horizontally
-    // Wait for table renderer
-        const tableContainer = await driver.wait(
-            until.elementLocated(
-                By.css('.o_list_renderer')
-            ),
-            5000
-        );
-
-        // Scroll horizontally to the RIGHT
-        await driver.executeScript(`
-            arguments[0].scrollLeft = arguments[0].scrollWidth;
-        `, tableContainer);
-
-        // OPTIONAL: wait a little after scrolling
-        await driver.sleep(1000);  
-
     // From Owner
     // Wait until the input field is visible
         const clickFromOwner = await driver.wait(
             until.elementLocated(By.css('td[name="owner_id"]')),
             4000
         );
+
+        await driver.wait(until.elementIsVisible(clickFromOwner), 4000)
+        clickFromOwner.click()
 
     // Scroll into view (optional)
         await driver.executeScript(
@@ -874,25 +850,48 @@ const main = async () => {
 
     // Click the td element
         await clickFromOwner.click();
+        await clickFromOwner.sendKeys("3D CREATIONS");
+        console.log("Clicked the From Owner field")
         await driver.sleep(4000); 
 
 
-    // Select searched product
-        const fromOwner = await driver.wait(
-            until.elementLocated(By.id('autocomplete_0_1'), 
-            4000))
+   // Wait for dropdown to appear
+        await driver.wait(
+            until.elementLocated(
+                By.xpath("//a[contains(.,'3D CREATIONS PRIVATE LIMITED')]")
+            ),
+            8000
+        );
 
-        await driver.wait(until.elementIsVisible(fromOwner), 4000);
-        await fromOwner.click();
+        // Small wait for Odoo rendering
+        await driver.sleep(2000);
 
-        await driver.sleep(2000)
+        // RE-LOCATE element to avoid stale reference
+        const option = await driver.findElement(
+            By.xpath("//a[contains(.,'3D CREATIONS PRIVATE LIMITED')]")
+        );
+
+        // Scroll into view
+        await driver.executeScript(
+            "arguments[0].scrollIntoView({block:'center'});",
+            option
+        );
+
+        // Use JS click (best for Odoo)
+        await driver.executeScript(
+            "arguments[0].click();",
+            option
+        );
+
+        console.log("Dropdown option selected successfully");
+
 
     // Add quantity input field
         const quantityInput = await driver.wait(
             until.elementLocated(
                 By.css('td[name="quantity"] input.o_input')
             ),
-            8000
+            7000
         );
 
     // Scroll into view
@@ -910,6 +909,36 @@ const main = async () => {
         await quantityInput.sendKeys('10');
         await driver.sleep(4000); 
         console.log('Quantity entered successfully.');
+
+
+    // Wait for Save button using class + text
+        const saveDetails = await driver.wait(
+            until.elementLocated(By.xpath('//button[contains(@class,"o_form_button_save") and normalize-space()="Save"]')),
+            6000
+        );
+
+        // Scroll into view (optional)
+        await driver.executeScript(
+            "arguments[0].scrollIntoView({block:'center'});",
+            saveDetails
+        );
+
+        // Click Save button
+        await saveDetails.click();
+        console.log('Save button clicked successfully.');
+        await driver.sleep(4000);
+
+        // Validate Receipt
+        const valReceipt = await driver.wait(
+            until.elementLocated(By.name('button_validate')),
+            4000
+        )
+
+        await driver.wait(until.elementIsVisible(valReceipt), 6000);
+        await valReceipt.click();
+        console.log("Validate the Receipt")
+
+        await driver.sleep(3000);
 
 
     } catch(err) {
