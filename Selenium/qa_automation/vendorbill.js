@@ -1,132 +1,201 @@
-const {By, Builder, Browser, until, Key, Button} = require('selenium-webdriver');
-const { elementLocated, elementIsVisible } = require('selenium-webdriver/lib/until');
+const {
+  By,
+  Builder,
+  Browser,
+  until,
+  Key,
+  Button,
+} = require("selenium-webdriver");
+const {
+  elementLocated,
+  elementIsVisible,
+} = require("selenium-webdriver/lib/until");
 
 const main = async () => {
-    const driver = await new Builder().forBrowser(Browser.CHROME).build();
-    
-    try{
-    await driver.get('https://odoo.uat.reach52.com/web/database/selector');
+  const driver = await new Builder().forBrowser(Browser.CHROME).build();
 
-        // Maximize browser window
-        driver.manage().window().maximize();
-        await driver.sleep(2000);
-        await driver.executeScript(
-            "window.scrollBy(0, 500);"
-        );
-        await driver.sleep(3000);
+  try {
+    await driver.get("https://odoo.uat.reach52.com/web/database/selector");
 
-        // Shows page title and database
-        const dblistpage = await driver.getTitle()
-        console.log('database list page', dblistpage)
+    // Maximize browser window
+    driver.manage().window().maximize();
+    await driver.sleep(2000);
+    await driver.executeScript("window.scrollBy(0, 500);");
+    await driver.sleep(3000);
 
-        await driver.sleep(4000);
+    // Shows page title and database
+    const dblistpage = await driver.getTitle();
+    console.log("database list page", dblistpage);
 
-        // Wait until correct page is loaded
-        await driver.wait(async () => {
-        const url = await driver.getCurrentUrl();
-        return url.includes("database") || url.includes("db=");
-        }, 15000);
+    await driver.sleep(4000);
 
-        // Wait for DB list container
-        await driver.wait(
-        until.elementLocated(By.css(".list-group")),
-        15000
-        );
+    // Wait until correct page is loaded
+    await driver.wait(async () => {
+      const url = await driver.getCurrentUrl();
+      return url.includes("database") || url.includes("db=");
+    }, 15000);
 
-        // Debug: confirm links exist
-        let links = await driver.findElements(By.css("a"));
-        console.log("Links found:", links.length);
+    // Wait for DB list container
+    await driver.wait(until.elementLocated(By.css(".list-group")), 15000);
 
-        // Click target DB
-        let dbLink = await driver.findElement(
-        By.xpath("//a[contains(@href,'uat_plan_b_review')]")
-        );
+    // Debug: confirm links exist
+    let links = await driver.findElements(By.css("a"));
+    console.log("Links found:", links.length);
 
-        await dbLink.click();
-        await driver.sleep(2000);
+    // Click target DB
+    let dbLink = await driver.findElement(
+      By.xpath("//a[contains(@href,'uat_plan_b_review')]"),
+    );
 
-        //wait for the username field to be present and visible
-        const usernameInput = await driver.wait(
-            until.elementLocated(By.id("login")), 
-            15000);
+    await dbLink.click();
+    await driver.sleep(2000);
 
-        await driver.wait(until.elementIsVisible(usernameInput), 5000);
+    //wait for the username field to be present and visible
+    const usernameInput = await driver.wait(
+      until.elementLocated(By.id("login")),
+      15000,
+    );
 
-        // clear (if needed) and send keys
-        await usernameInput.clear();
-        await usernameInput.sendKeys("odoo.dev2@reach52.com");
+    await driver.wait(until.elementIsVisible(usernameInput), 5000);
 
-        // optionally verify value
-        const value = await usernameInput.getAttribute("value");
-        console.log("username entered:", value);
+    // clear (if needed) and send keys
+    await usernameInput.clear();
+    await usernameInput.sendKeys("odoo.dev2@reach52.com");
 
-        // wait for the username field to be present and visible
-        const passwordInput = await driver.wait(
-            until.elementLocated(By.id('password')),
-            15000);
+    // optionally verify value
+    const value = await usernameInput.getAttribute("value");
+    console.log("username entered:", value);
 
-        await driver.wait(until.elementIsVisible(passwordInput), 5000);
+    // wait for the username field to be present and visible
+    const passwordInput = await driver.wait(
+      until.elementLocated(By.id("password")),
+      15000,
+    );
 
-        // clear (if needed) and send keys
-        await passwordInput.clear();
-        await passwordInput.sendKeys("password-R52");
+    await driver.wait(until.elementIsVisible(passwordInput), 5000);
 
-        // optionally verify value
-        const pwdValue = await passwordInput.getAttribute("value");
-        console.log("Password entered:", pwdValue);
+    // clear (if needed) and send keys
+    await passwordInput.clear();
+    await passwordInput.sendKeys("password-R52");
 
-        // wait for submit button
-        const loginBtn = await driver.wait(
-            until.elementLocated(By.css('button.btn.btn-primary')),
-            8000);
+    // optionally verify value
+    const pwdValue = await passwordInput.getAttribute("value");
+    console.log("Password entered:", pwdValue);
 
-        await driver.wait(until.elementIsVisible(loginBtn), 4000);
-        await loginBtn.click();
-        console.log("Login button clicked");
+    // wait for submit button
+    const loginBtn = await driver.wait(
+      until.elementLocated(By.css("button.btn.btn-primary")),
+      8000,
+    );
 
-        await driver.sleep(2000);
+    await driver.wait(until.elementIsVisible(loginBtn), 4000);
+    await loginBtn.click();
+    console.log("Login button clicked");
 
-    // Click Purchase button
-    // click Purchase App
-        const purchaseBtn = await driver.wait(
-            until.elementLocated(By.id('result_app_5')),
-            8000);
+    await driver.sleep(2000);
 
-        await driver.wait(until.elementIsVisible(purchaseBtn), 4000);
-        await purchaseBtn.click();
-        console.log("Purchase button clicked");
+    // Click Purchase App
+    const purchaseBtn = await driver.wait(
+      until.elementLocated(By.id("result_app_5")),
+      8000,
+    );
+
+    await driver.wait(until.elementIsVisible(purchaseBtn), 4000);
+    await purchaseBtn.click();
+    console.log("Purchase button clicked");
 
     // Click Order menu
-        const orderbtn = await driver.wait(
-            until.elementLocated(By.css('button[data-menu-xmlid="purchase.menu_procurement_management"]')),
-            8000);
+    const orderbtn = await driver.wait(
+      until.elementLocated(
+        By.css(
+          'button[data-menu-xmlid="purchase.menu_procurement_management"]',
+        ),
+      ),
+      8000,
+    );
 
-        await driver.wait(until.elementIsVisible(orderbtn), 4000);
-        await orderbtn.click();
-        console.log("Order menu is clicked");
+    await driver.wait(until.elementIsVisible(orderbtn), 4000);
+    await orderbtn.click();
+    console.log("Order menu is clicked");
 
-        await driver.sleep(2000)
+    await driver.sleep(2000);
 
     // Purhase Order menu
-        const purchaseOrder = await driver.wait(
-            until.elementLocated(By.xpath("//a[contains(text(),'Purchase Orders')]")),
-            7000);
+    const purchaseOrder = await driver.wait(
+      until.elementLocated(By.xpath("//a[contains(text(),'Purchase Orders')]")),
+      7000,
+    );
 
-        await driver.wait(until.elementIsVisible(purchaseOrder), 4000);
+    await driver.wait(until.elementIsVisible(purchaseOrder), 4000);
 
-    //  Click using JavaScript (most reliable in Odoo)
-        await driver.executeScript("arguments[0].click();", purchaseOrder);
-        console.log("Purchase Order menu is clicked")
+    // Click using JavaScript (most reliable in Odoo)
+    await driver.executeScript("arguments[0].click();", purchaseOrder);
+    console.log("Purchase Order menu is clicked");
 
-        await driver.sleep(5000)    
+    await driver.sleep(5000);
 
+    // Wait until purchase order rows
+    await driver.wait(
+      until.elementsLocated(By.css("table.o_list_table tbody tr.o_data_row")),
+      7000,
+    );
 
-      } catch(err) {
-    console.error("test failed:", err);
-    } finally {
-    await driver.quit();
+    // Get all purchase order rows
+    const rows = await driver.findElements(
+      By.css("table.o_list_table tbody tr.o_data_row"),
+    );
 
+    // Check if rows exist
+    if (rows.length > 0) {
+      // Get first available purchase order
+      const firstRow = rows[0];
+      await driver.sleep(5000);
+
+      // Find PO clickable cell
+      const poElement = await firstRow.findElement(By.css("td[name='name']"));
+
+      // Get PO number
+      const poNumber = await poElement.getText();
+      await driver.sleep(5000);
+
+      console.log("Opening Purchase Order:", poNumber);
+
+      // Scroll into view
+      await driver.executeScript(
+        "arguments[0].scrollIntoView({block:'center'});",
+        poElement,
+      );
+
+      // Click Purchase Order
+      await poElement.click();
+      await driver.sleep(5000);
+
+      // Wait until "Upload Bill" button is visible
+      const uploadBillButton = await driver.wait(
+        until.elementLocated(
+          By.xpath("//button[contains(text(),'Upload Bill')]"),
+        ),
+        15000,
+      );
+
+      // Scroll into view
+      await driver.executeScript(
+        "arguments[0].scrollIntoView({block:'center'});",
+        uploadBillButton,
+      );
+
+      // Click button
+      await uploadBillButton.click();
+      console.log("Upload Bill button clicked");
+      await driver.sleep(5000);
+    } else {
+      console.log("No Purchase Orders Found");
     }
-}
+  } catch (err) {
+    console.error("test failed:", err);
+  } finally {
+    await driver.quit();
+  }
+};
 
-main()
+main();

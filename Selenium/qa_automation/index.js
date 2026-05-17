@@ -1,14 +1,13 @@
-const {By, Builder, Browser} = require('selenium-webdriver');
+const { By, Builder, Browser } = require("selenium-webdriver");
 
 const main = async () => {
-    const driver = await new Builder().forBrowser(Browser.CHROME).build();
-    
-    await driver.get('https://www.google.com"');
+  const driver = await new Builder().forBrowser(Browser.CHROME).build();
 
-    const title = await driver.getTitle()
-    console.log(title)
+  await driver.get('https://www.google.com"');
 
-    await driver.quit()
+  const title = await driver.getTitle();
+  console.log(title);
 
-}
-main()
+  await driver.quit();
+};
+main();
