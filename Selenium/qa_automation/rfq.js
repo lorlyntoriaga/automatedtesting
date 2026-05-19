@@ -215,11 +215,29 @@ const main = async () => {
     await input.sendKeys(Key.chord(Key.CONTROL, "a")); // select all
     await input.sendKeys(Key.BACK_SPACE); // clear
     await input.sendKeys("2");
-    await input.sendKeys(Key.ENTER); // save
 
     // optionally verify value
     const quantityValue = await addQuantity.getAttribute("value");
     console.log("quantity entered:", quantityValue);
+
+    await driver.sleep(4000);
+
+    // Add unit price
+    // Wait for the input to appear inside the cell
+    const priceUnit = await driver.wait(
+      until.elementLocated(By.xpath("//td[@name='price_unit']//input")),
+      8000,
+    );
+
+    // Clear existing value and set to 2
+    await priceUnit.sendKeys(Key.chord(Key.CONTROL, "a")); // select all
+    await priceUnit.sendKeys(Key.BACK_SPACE); // clear
+    await priceUnit.sendKeys("10");
+    await priceUnit.sendKeys(Key.ENTER); // save
+
+    // optionally verify value
+    const priceValue = await priceUnit.getAttribute("value");
+    console.log("quantity entered:", priceValue);
 
     await driver.sleep(4000);
 

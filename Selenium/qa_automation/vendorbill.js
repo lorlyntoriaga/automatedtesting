@@ -13,6 +13,7 @@ const {
 const path = require("path");
 
 
+
 const main = async () => {
   const driver = await new Builder().forBrowser(Browser.CHROME).build();
 
@@ -151,14 +152,14 @@ const main = async () => {
     if (rows.length > 0) {
       // Get first available purchase order
       const firstRow = rows[0];
-      await driver.sleep(5000);
+      await driver.sleep(3000);
 
       // Find PO clickable cell
       const poElement = await firstRow.findElement(By.css("td[name='name']"));
 
       // Get PO number
       const poNumber = await poElement.getText();
-      await driver.sleep(5000);
+      await driver.sleep(3000);
 
       console.log("Opening Purchase Order:", poNumber);
 
@@ -170,47 +171,55 @@ const main = async () => {
 
       // Click Purchase Order
       await poElement.click();
-      await driver.sleep(5000);
+      await driver.sleep(3000);
 
-      // Wait until "Upload Bill" button is visible
+      // Wait for upload button
       const uploadBillButton = await driver.wait(
         until.elementLocated(
-          By.xpath("//button[contains(text(),'Upload Bill')]"),
+          By.xpath("//button[contains(text(),'Upload Bill')]")
         ),
-        15000,
+        8000
       );
 
       // Scroll into view
       await driver.executeScript(
         "arguments[0].scrollIntoView({block:'center'});",
-        uploadBillButton,
+        uploadBillButton
       );
 
-      // Click button
+      // OPTIONAL: click only if it reveals input
       await uploadBillButton.click();
-      console.log("Upload Bill button clicked");
       await driver.sleep(5000);
+      console.log("Upload Bill button clicked");
 
-      // Locate file
-      const filePath = path.resolve("vendorcollana.txt")
-      console.log("Upload file: ", filePath)
+      // Wait for file input
+      const fileInput = await driver.wait(
+        until.elementLocated(
+          By.css("input.document_file_uploader")
+        ),
+        8000
+      );
 
-       const fileInput = await driver.wait(
-            until.elementLocated(
-                By.css("input.document_file_uploader")
-            ),
-            20000
-        );
+      // Make visible if hidden
+      await driver.executeScript(`
+        arguments[0].classList.remove('d-none');
+        arguments[0].style.display = 'block';
+      `, fileInput);
 
-        // REMOVE HIDDEN CLASS
-        await driver.executeScript(`
-            arguments[0].classList.remove('d-none');
-        `, fileInput);
+      // Absolute path
+      const filePath = path.resolve("vendorcollana.txt");
+      await driver.sleep(5000);
+      console.log("Uploading:", filePath);
 
-        // UPLOAD FILE DIRECTLY
-        await fileInput.sendKeys(filePath);
-        await driver.sleep(5000);
-        console.log("vendorbill.txt uploaded successfully");
+      // Upload directly
+      await fileInput.sendKeys(filePath);
+      console.log("File uploaded successfully");
+      await driver.sleep(3000);
+
+      const ks = require('node-key-sender');
+      await ks.sendKey('escape');
+
+      console.log("ESC pressed");
 
       // Add Place of Supply 
       const placeOfSupply = driver.wait(
@@ -220,6 +229,7 @@ const main = async () => {
       await driver.wait(until.elementIsVisible(placeOfSupply), 4000);
       await placeOfSupply.click();
       console.log("Place of Supply field is clicked");
+      await driver.sleep(3000);
 
       // Select Place of Supply
       const selectPOS = await driver.wait(
@@ -229,8 +239,7 @@ const main = async () => {
 
       await driver.wait(until.elementIsVisible(selectPOS), 4000);
       selectPOS.click();
-
-      await driver.sleep(5000);
+      await driver.sleep(3000);
 
       // Click Bill date
       const billDate = await driver.wait(
@@ -244,22 +253,24 @@ const main = async () => {
 
       await driver.sleep(3000);
 
-      // 2. Select day 18
-      const date18 = await driver.wait(
+      // 2. Select day 20
+      const date20 = await driver.wait(
         until.elementLocated(
           By.xpath(
-            "//div[contains(@class,'o_date_item_cell') and .//div[text()='18']]",
+            "//div[contains(@class,'o_date_item_cell') and .//div[text()='20']]",
           ),
         ),
         8000,
       );
 
-      await driver.wait(until.elementIsVisible(date18), 4000);
-      await driver.wait(until.elementIsEnabled(date18), 4000);
-      await date18.click();
-      console.log("Select date 18");
+      await driver.wait(until.elementIsVisible(date20), 4000);
+      await driver.wait(until.elementIsEnabled(date20), 4000);
+      await date20.click();
+      console.log("Select date 20");
 
       await driver.sleep(3000);
+
+      
 
 
     } else {
