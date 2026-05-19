@@ -1,0 +1,23 @@
+Vendor: ABC Supplies Inc.
+Bill Reference: BILL-2026-001
+Bill Date: 2026-05-17
+Accounting Date: 2026-05-17
+
+Products:
+--------------------------------------------------
+Product Name       Qty     Unit Price     Total
+--------------------------------------------------
+Laptop Bag         5       25.00          125.00
+Wireless Mouse     10      15.00          150.00
+Keyboard            8      20.00          160.00
+--------------------------------------------------
+
+Subtotal:                           435.00
+Tax (10%):                           43.50
+Total:                              478.50
+
+Payment Terms:
+30 Days
+
+Notes:
+Sample Vendor Bill uploaded for automation testing.

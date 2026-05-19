@@ -10,6 +10,8 @@ const {
   elementLocated,
   elementIsVisible,
 } = require("selenium-webdriver/lib/until");
+const path = require("path");
+
 
 const main = async () => {
   const driver = await new Builder().forBrowser(Browser.CHROME).build();
@@ -188,6 +190,78 @@ const main = async () => {
       await uploadBillButton.click();
       console.log("Upload Bill button clicked");
       await driver.sleep(5000);
+
+      // Locate file
+      const filePath = path.resolve("vendorcollana.txt")
+      console.log("Upload file: ", filePath)
+
+       const fileInput = await driver.wait(
+            until.elementLocated(
+                By.css("input.document_file_uploader")
+            ),
+            20000
+        );
+
+        // REMOVE HIDDEN CLASS
+        await driver.executeScript(`
+            arguments[0].classList.remove('d-none');
+        `, fileInput);
+
+        // UPLOAD FILE DIRECTLY
+        await fileInput.sendKeys(filePath);
+        await driver.sleep(5000);
+        console.log("vendorbill.txt uploaded successfully");
+
+      // Add Place of Supply 
+      const placeOfSupply = driver.wait(
+        until.elementLocated(By.id("l10n_in_state_id_0")), 4000
+      )  
+
+      await driver.wait(until.elementIsVisible(placeOfSupply), 4000);
+      await placeOfSupply.click();
+      console.log("Place of Supply field is clicked");
+
+      // Select Place of Supply
+      const selectPOS = await driver.wait(
+        until.elementLocated(By.id("l10n_in_state_id_0_0_0")),
+        4000,
+      );
+
+      await driver.wait(until.elementIsVisible(selectPOS), 4000);
+      selectPOS.click();
+
+      await driver.sleep(5000);
+
+      // Click Bill date
+      const billDate = await driver.wait(
+        until.elementLocated(By.id("invoice_date_1")),
+        4000,
+      );
+
+      await driver.wait(until.elementIsVisible(billDate), 4000);
+      await billDate.click();
+      console.log("bill date date-picker is clicked");
+
+      await driver.sleep(3000);
+
+      // 2. Select day 18
+      const date18 = await driver.wait(
+        until.elementLocated(
+          By.xpath(
+            "//div[contains(@class,'o_date_item_cell') and .//div[text()='18']]",
+          ),
+        ),
+        8000,
+      );
+
+      await driver.wait(until.elementIsVisible(date18), 4000);
+      await driver.wait(until.elementIsEnabled(date18), 4000);
+      await date18.click();
+      console.log("Select date 18");
+
+      await driver.sleep(3000);
+
+
     } else {
       console.log("No Purchase Orders Found");
     }
