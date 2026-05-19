@@ -12,8 +12,6 @@ const {
 } = require("selenium-webdriver/lib/until");
 const path = require("path");
 
-
-
 const main = async () => {
   const driver = await new Builder().forBrowser(Browser.CHROME).build();
 
@@ -176,15 +174,15 @@ const main = async () => {
       // Wait for upload button
       const uploadBillButton = await driver.wait(
         until.elementLocated(
-          By.xpath("//button[contains(text(),'Upload Bill')]")
+          By.xpath("//button[contains(text(),'Upload Bill')]"),
         ),
-        8000
+        8000,
       );
 
       // Scroll into view
       await driver.executeScript(
         "arguments[0].scrollIntoView({block:'center'});",
-        uploadBillButton
+        uploadBillButton,
       );
 
       // OPTIONAL: click only if it reveals input
@@ -194,17 +192,18 @@ const main = async () => {
 
       // Wait for file input
       const fileInput = await driver.wait(
-        until.elementLocated(
-          By.css("input.document_file_uploader")
-        ),
-        8000
+        until.elementLocated(By.css("input.document_file_uploader")),
+        8000,
       );
 
       // Make visible if hidden
-      await driver.executeScript(`
+      await driver.executeScript(
+        `
         arguments[0].classList.remove('d-none');
         arguments[0].style.display = 'block';
-      `, fileInput);
+      `,
+        fileInput,
+      );
 
       // Absolute path
       const filePath = path.resolve("vendorcollana.txt");
@@ -216,15 +215,16 @@ const main = async () => {
       console.log("File uploaded successfully");
       await driver.sleep(3000);
 
-      const ks = require('node-key-sender');
-      await ks.sendKey('escape');
+      const ks = require("node-key-sender");
+      await ks.sendKey("escape");
 
       console.log("ESC pressed");
 
-      // Add Place of Supply 
+      // Add Place of Supply
       const placeOfSupply = driver.wait(
-        until.elementLocated(By.id("l10n_in_state_id_0")), 4000
-      )  
+        until.elementLocated(By.id("l10n_in_state_id_0")),
+        4000,
+      );
 
       await driver.wait(until.elementIsVisible(placeOfSupply), 4000);
       await placeOfSupply.click();
@@ -253,26 +253,62 @@ const main = async () => {
 
       await driver.sleep(3000);
 
-      // 2. Select day 20
-      const date20 = await driver.wait(
+      // 2. Select day 19
+      const date19 = await driver.wait(
         until.elementLocated(
           By.xpath(
-            "//div[contains(@class,'o_date_item_cell') and .//div[text()='20']]",
+            "//div[contains(@class,'o_date_item_cell') and .//div[text()='19']]",
           ),
         ),
         8000,
       );
 
-      await driver.wait(until.elementIsVisible(date20), 4000);
-      await driver.wait(until.elementIsEnabled(date20), 4000);
-      await date20.click();
-      console.log("Select date 20");
+      await driver.wait(until.elementIsVisible(date19), 4000);
+      await driver.wait(until.elementIsEnabled(date19), 4000);
+      await date19.click();
+      console.log("Select date 19");
 
       await driver.sleep(3000);
 
+      // Add Quantity
+            const cell = await driver.wait(
+              until.elementLocated(By.css('td[name="quantity"]')),
+              10000,
+            );
+
+            await driver.executeScript(
+              "arguments[0].scrollIntoView({block:'center'});",
+              cell,
+            );
+
+            await cell.click();
+
+            const vendorBillqty = await driver.wait(
+              until.elementLocated(By.css('td[name="quantity"] input.o_input')),
+              7000,
+            );
+
+            await vendorBillqty.clear();
+            await vendorBillqty.sendKeys('15');
+
+              // optionally verify value
+          const vendorBillValue = await vendorBillqty.getAttribute("value");
+          console.log("quantity entered:", vendorBillValue);
+            
+          await driver.sleep(5000);
       
+      // Confirm vendor bill
+      const confirmVendorBill = await driver.wait(
+        until.elementLocated(By.name("action_post")),
+        4000,
+      );
 
+      await driver.wait(until.elementIsVisible(confirmVendorBill), 4000);
+      confirmVendorBill.click();
+      console.log("Vendor Bill is created");
+      await driver.sleep(7000);
 
+      
     } else {
       console.log("No Purchase Orders Found");
     }
