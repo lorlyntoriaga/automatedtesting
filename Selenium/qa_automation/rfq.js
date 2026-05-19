@@ -10,6 +10,12 @@ const main = async () => {
   try {
     await driver.get("https://odoo.uat.reach52.com/web/database/selector");
 
+    // Maximize browser window
+    driver.manage().window().maximize();
+    await driver.sleep(2000);
+    await driver.executeScript("window.scrollBy(0, 500);");
+    await driver.sleep(3000);
+
     // Shows page title and database
     const dblistpage = await driver.getTitle();
     console.log("database list page", dblistpage);
@@ -237,7 +243,7 @@ const main = async () => {
 
     // optionally verify value
     const priceValue = await priceUnit.getAttribute("value");
-    console.log("quantity entered:", priceValue);
+    console.log("price entered:", priceValue);
 
     await driver.sleep(4000);
 

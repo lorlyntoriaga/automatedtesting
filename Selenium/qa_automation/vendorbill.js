@@ -271,32 +271,32 @@ const main = async () => {
       await driver.sleep(3000);
 
       // Add Quantity
-            const cell = await driver.wait(
-              until.elementLocated(By.css('td[name="quantity"]')),
-              10000,
-            );
+      const cell = await driver.wait(
+        until.elementLocated(By.css('td[name="quantity"]')),
+        10000,
+      );
 
-            await driver.executeScript(
-              "arguments[0].scrollIntoView({block:'center'});",
-              cell,
-            );
+      await driver.executeScript(
+        "arguments[0].scrollIntoView({block:'center'});",
+        cell,
+      );
 
-            await cell.click();
+      await cell.click();
 
-            const vendorBillqty = await driver.wait(
-              until.elementLocated(By.css('td[name="quantity"] input.o_input')),
-              7000,
-            );
+      const vendorBillqty = await driver.wait(
+        until.elementLocated(By.css('td[name="quantity"] input.o_input')),
+        7000,
+      );
 
-            await vendorBillqty.clear();
-            await vendorBillqty.sendKeys('15');
+      await vendorBillqty.clear();
+      await vendorBillqty.sendKeys("15");
 
-              // optionally verify value
-          const vendorBillValue = await vendorBillqty.getAttribute("value");
-          console.log("quantity entered:", vendorBillValue);
-            
-          await driver.sleep(5000);
-      
+      // optionally verify value
+      const vendorBillValue = await vendorBillqty.getAttribute("value");
+      console.log("quantity entered:", vendorBillValue);
+
+      await driver.sleep(5000);
+
       // Confirm vendor bill
       const confirmVendorBill = await driver.wait(
         until.elementLocated(By.name("action_post")),
@@ -307,6 +307,7 @@ const main = async () => {
       confirmVendorBill.click();
       console.log("Vendor Bill is created");
       await driver.sleep(7000);
+
 
       
     } else {
