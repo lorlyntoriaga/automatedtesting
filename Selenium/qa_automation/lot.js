@@ -156,7 +156,7 @@ const main = async () => {
 
     await driver.wait(until.elementIsVisible(lotField), 8000);
     await lotField.click();
-    await lotField.sendKeys('LOT-0001-00001');
+    await lotField.sendKeys('LOT-0001-00002');
 
     await driver.sleep(3000);
 
@@ -287,6 +287,16 @@ const main = async () => {
     console.log("Activity button is clicked");
 
     await driver.sleep(5000);
+
+    // CLick Save button
+    const saveButton = await driver.wait(
+      until.elementLocated(By.name("action_schedule_activities")),
+      4000,
+    );
+
+    await driver.wait(until.elementIsVisible(saveButton), 7000);
+    await saveButton.click();
+    console.log("Save button is clicked");
 
 
   } catch (err) {

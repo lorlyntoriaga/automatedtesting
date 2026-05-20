@@ -120,18 +120,18 @@ const main = async () => {
 
     await driver.sleep(2000);
 
-    // Vendor menu
-    const vendor = await driver.wait(
+    // Report menu
+    const rprtPur = await driver.wait(
       until.elementLocated(
         By.css('a[data-menu-xmlid="purchase.purchase_report"]'),
       ),
       8000,
     );
 
-    await driver.wait(until.elementIsVisible(vendor), 4000);
+    await driver.wait(until.elementIsVisible(rprtPur), 4000);
 
     //  Click using JavaScript (most reliable in Odoo)
-    await driver.executeScript("arguments[0].click();", vendor);
+    await driver.executeScript("arguments[0].click();", rprtPur);
     console.log("Purchase is clicked");
 
     await driver.sleep(6000);
@@ -142,8 +142,6 @@ const main = async () => {
 
     await removeBtn.click();
     await driver.sleep(6000);
-
-
     
 
   } catch (err) {
