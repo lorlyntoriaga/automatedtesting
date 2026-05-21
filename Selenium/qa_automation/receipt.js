@@ -105,12 +105,84 @@ const main = async () => {
     await purchaseBtn.click();
     console.log("Purchase App clicked");
 
+    await driver.sleep(3000);
+
+    // Click the Company
+    const companyButton = await driver.wait(
+      until.elementLocated(
+        By.css("div.o_switch_company_menu button.dropdown-toggle"),
+      ),
+      10000,
+    );
+
+    // Click the button
+    await companyButton.click();
+
+    console.log("Company menu clicked successfully.");
+    await driver.sleep(5000);
+
+    // Locate main branch
+    const mainDbChckbx = await driver.wait(
+      until.elementLocated(
+        By.xpath(
+          "//div[@role='menuitemcheckbox' and @aria-label='reach52 IND']",
+        ),
+      ),
+      6000,
+    );
+
+    // Check current state
+    const mainChecked = await mainDbChckbx.getAttribute("aria-checked");
+
+    // Uncheck only if currently checked
+    if (mainChecked === "true") {
+      await mainDbChckbx.click();
+      console.log("Checkbox unchecked.");
+    } else {
+      console.log("Checkbox is already unchecked.");
+    }
+
+    // Select a branch db (Ambala)
+    // Locate the checkbox element using aria-label
+    const ambalaDbChckbx = await driver.wait(
+      until.elementLocated(
+        By.xpath(
+          "//div[@role='menuitemcheckbox' and @aria-label='reach52 - IND - Ambala']",
+        ),
+      ),
+      6000,
+    );
+
+    // Check current state
+    const checked = await ambalaDbChckbx.getAttribute("aria-checked");
+
+    // Click only if not already checked
+    if (checked !== "true") {
+      await ambalaDbChckbx.click();
+      console.log("Checkbox checked.");
+    } else {
+      console.log("Checkbox is already checked.");
+    }
+
+    await driver.sleep(4000);
+
+    // Confirm changing of branch
+    // Wait for the Confirm button
+    const confirmButton = await driver.wait(
+      until.elementLocated(By.xpath("//button[contains(text(),'Confirm')]")),
+      8000,
+    );
+
+    // Click the button
+    await confirmButton.click();
+    await driver.sleep(5000);
+    await driver.navigate().refresh();
     await driver.sleep(2000);
 
     // new Purchase button
     const newPurcBtn = await driver.wait(
       until.elementLocated(By.css("button.o_list_button_add")),
-      4000,
+      5000,
     );
 
     await driver.wait(until.elementIsVisible(newPurcBtn), 4000);
@@ -246,20 +318,20 @@ const main = async () => {
 
     await driver.sleep(3000);
 
-    // 2. Select day 18
-    const date18 = await driver.wait(
+    // 2. Select day 22
+    const date22 = await driver.wait(
       until.elementLocated(
         By.xpath(
-          "//div[contains(@class,'o_date_item_cell') and .//div[text()='18']]",
+          "//div[contains(@class,'o_date_item_cell') and .//div[text()='22']]",
         ),
       ),
       8000,
     );
 
-    await driver.wait(until.elementIsVisible(date18), 4000);
-    await driver.wait(until.elementIsEnabled(date18), 4000);
+    await driver.wait(until.elementIsVisible(date22), 4000);
+    await driver.wait(until.elementIsEnabled(date22), 4000);
     await date18.click();
-    console.log("Select date 18");
+    console.log("Select date 22");
 
     /* select expected arrival date picker
         const expectedArr = await driver.wait(
@@ -524,7 +596,7 @@ const main = async () => {
     await confirmOrder.click();
     console.log("Confirm button is clicked (Purchased Order is created)");
 
-    await driver.sleep(3000);
+    await driver.sleep(5000);
 
     // Go to Receipt
     const goToReceipt = await driver.wait(
@@ -601,6 +673,28 @@ const main = async () => {
         console.log("Select Lots for Tracking")
 
         await driver.sleep(4000); */
+
+    // Change Track Inventory
+    const trackInv = await driver.wait(
+      until.elementLocated(By.id("tracking_1")),
+      4000,
+    );
+
+    await driver.wait(until.elementIsVisible(trackInv), 7000);
+    await trackInv.click();
+
+    await driver.sleep(3000);
+
+    // Select by Lots for tracking inventory
+    const byLots = await driver.wait(
+      until.elementLocated(By.xpath("//div[text()='By Lots']")),
+      4000,
+    );
+
+    await driver.wait(until.elementIsVisible(byLots), 7000);
+    await byLots.click();
+
+    await driver.sleep(3000);
 
     // Click Inventory Tab
     const inventoryTab = await driver.wait(

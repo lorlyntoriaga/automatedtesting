@@ -201,9 +201,9 @@ const main = async () => {
     await driver.wait(until.elementIsVisible(clickProductSearch), 5000);
     await clickProductSearch.click();
 
-    await driver.sleep(4000);
+    await driver.sleep(5000);
 
-    // click quantity
+    /* click quantity
     const addQuantity = await driver.wait(
       until.elementLocated(By.name("product_qty"), 5000),
     );
@@ -245,7 +245,7 @@ const main = async () => {
     const priceValue = await priceUnit.getAttribute("value");
     console.log("price entered:", priceValue);
 
-    await driver.sleep(4000);
+    await driver.sleep(5000); */
 
     // Confirm the RFQ
     const saveBtn = await driver.wait(
