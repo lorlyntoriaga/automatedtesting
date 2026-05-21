@@ -106,6 +106,78 @@ const main = async () => {
 
     await driver.sleep(2000);
 
+    // Click the Company
+    const companyButton = await driver.wait(
+      until.elementLocated(
+        By.css("div.o_switch_company_menu button.dropdown-toggle"),
+      ),
+      10000,
+    );
+
+    // Click the button
+    await companyButton.click();
+
+    console.log("Company menu clicked successfully.");
+    await driver.sleep(5000);
+
+    // Locate main branch
+    const mainDbChckbx = await driver.wait(
+      until.elementLocated(
+        By.xpath(
+          "//div[@role='menuitemcheckbox' and @aria-label='reach52 IND']",
+        ),
+      ),
+      6000,
+    );
+
+    // Check current state
+    const mainChecked = await mainDbChckbx.getAttribute("aria-checked");
+
+    // Uncheck only if currently checked
+    if (mainChecked === "true") {
+      await mainDbChckbx.click();
+      console.log("Checkbox unchecked.");
+    } else {
+      console.log("Checkbox is already unchecked.");
+    }
+
+    // Select a branch db (Ambala)
+    // Locate the checkbox element using aria-label
+    const ambalaDbChckbx = await driver.wait(
+      until.elementLocated(
+        By.xpath(
+          "//div[@role='menuitemcheckbox' and @aria-label='reach52 - IND - Ambala']",
+        ),
+      ),
+      6000,
+    );
+
+    // Check current state
+    const checked = await ambalaDbChckbx.getAttribute("aria-checked");
+
+    // Click only if not already checked
+    if (checked !== "true") {
+      await ambalaDbChckbx.click();
+      console.log("Checkbox checked.");
+    } else {
+      console.log("Checkbox is already checked.");
+    }
+
+    await driver.sleep(4000);
+
+    // Confirm changing of branch
+    // Wait for the Confirm button
+    const confirmButton = await driver.wait(
+      until.elementLocated(By.xpath("//button[contains(text(),'Confirm')]")),
+      8000,
+    );
+
+    // Click the button
+    await confirmButton.click();
+    await driver.sleep(5000);
+    await driver.navigate().refresh();
+    await driver.sleep(2000);
+
     // Click Order menu
     const orderbtn = await driver.wait(
       until.elementLocated(
@@ -161,7 +233,7 @@ const main = async () => {
 
     // clear (if needed) and send keys for Vendor Name
     await vendorName.clear();
-    await vendorName.sendKeys("MS GUPTA TEXTILES");
+    await vendorName.sendKeys("Rosa Pharma");
     await driver.sleep(4000);
     await vendorName.sendKeys(Key.ENTER);
 
@@ -344,6 +416,24 @@ const main = async () => {
     await driver.wait(until.elementIsVisible(selectGST), 4000);
     selectGST.click();
     console.log("GST is clicked");
+
+    await driver.sleep(4000);
+
+    // add GSTIN
+    const gstin = await driver.wait(
+      until.elementLocated(By.css('div[name="vat"] input.o-autocomplete--input')),
+      4000,
+    );
+
+    await driver.wait(until.elementIsVisible(addWebsite), 4000);
+    addWebsite.click();
+
+    await driver.sleep(4000);
+
+    // clear (if needed) and send keys in Website
+    await gstin.clear();
+    await gstin.sendKeys("/");
+    await gstin.sendKeys(Key.ENTER);
 
     await driver.sleep(4000);
 

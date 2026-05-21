@@ -106,6 +106,79 @@ const main = async () => {
 
     await driver.sleep(2000);
 
+    // Click the Company
+    const companyButton = await driver.wait(
+      until.elementLocated(
+        By.css("div.o_switch_company_menu button.dropdown-toggle"),
+      ),
+      10000,
+    );
+
+    // Click the button
+    await companyButton.click();
+
+    console.log("Company menu clicked successfully.");
+    await driver.sleep(5000);
+
+    // Locate main branch
+    const mainDbChckbx = await driver.wait(
+      until.elementLocated(
+        By.xpath(
+          "//div[@role='menuitemcheckbox' and @aria-label='reach52 IND']",
+        ),
+      ),
+      6000,
+    );
+
+    // Check current state
+    const mainChecked = await mainDbChckbx.getAttribute("aria-checked");
+
+    // Uncheck only if currently checked
+    if (mainChecked === "true") {
+      await mainDbChckbx.click();
+      console.log("Checkbox unchecked.");
+    } else {
+      console.log("Checkbox is already unchecked.");
+    }
+
+    // Select a branch db (Ambala)
+    // Locate the checkbox element using aria-label
+    const ambalaDbChckbx = await driver.wait(
+      until.elementLocated(
+        By.xpath(
+          "//div[@role='menuitemcheckbox' and @aria-label='reach52 - IND - Ambala']",
+        ),
+      ),
+      6000,
+    );
+
+    // Check current state
+    const checked = await ambalaDbChckbx.getAttribute("aria-checked");
+
+    // Click only if not already checked
+    if (checked !== "true") {
+      await ambalaDbChckbx.click();
+      console.log("Checkbox checked.");
+    } else {
+      console.log("Checkbox is already checked.");
+    }
+
+    await driver.sleep(4000);
+
+    // Confirm changing of branch
+    // Wait for the Confirm button
+    const confirmButton = await driver.wait(
+      until.elementLocated(By.xpath("//button[contains(text(),'Confirm')]")),
+      8000,
+    );
+
+    // Click the button
+    await confirmButton.click();
+    await driver.sleep(5000);
+    await driver.navigate().refresh();
+    await driver.sleep(2000);
+
+
     // Click Product menu
     const productbtn = await driver.wait(
       until.elementLocated(
@@ -156,7 +229,7 @@ const main = async () => {
 
     await driver.wait(until.elementIsVisible(lotField), 8000);
     await lotField.click();
-    await lotField.sendKeys('LOT-0001-00002');
+    await lotField.sendKeys('LOT-0001-00006');
 
     await driver.sleep(3000);
 
@@ -183,7 +256,7 @@ const main = async () => {
 
     await driver.sleep(3000);
 
-     // save internal notes
+    // save internal notes
     const paragraphDiv = await driver.wait(
       until.elementLocated(By.css('div.note-editable')),
       8000,
@@ -297,6 +370,8 @@ const main = async () => {
     await driver.wait(until.elementIsVisible(saveButton), 7000);
     await saveButton.click();
     console.log("Save button is clicked");
+
+    await driver.sleep(5000);
 
 
   } catch (err) {
