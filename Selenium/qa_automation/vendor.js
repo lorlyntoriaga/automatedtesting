@@ -233,8 +233,8 @@ const main = async () => {
 
     // clear (if needed) and send keys for Vendor Name
     await vendorName.clear();
-    await vendorName.sendKeys("Rosa Pharma");
-    await driver.sleep(4000);
+    await vendorName.sendKeys("KOZRA Inc");
+    await driver.sleep(2000);
     await vendorName.sendKeys(Key.ENTER);
 
     // optionally verify value
@@ -425,8 +425,8 @@ const main = async () => {
       4000,
     );
 
-    await driver.wait(until.elementIsVisible(addWebsite), 4000);
-    addWebsite.click();
+    await driver.wait(until.elementIsVisible(gstin), 4000);
+    gstin.click();
 
     await driver.sleep(4000);
 

@@ -230,7 +230,7 @@ const main = async () => {
 
     //type vendor ref and clear (if needed) and send keys
     await addVendorRef.clear();
-    await addVendorRef.sendKeys("SO00001");
+    await addVendorRef.sendKeys("SO00006");
 
     // optionally verify value
     const vendorRefValue = await addVendorRef.getAttribute("value");
@@ -318,20 +318,20 @@ const main = async () => {
 
     await driver.sleep(3000);
 
-    // 2. Select day 22
-    const date22 = await driver.wait(
+    // 2. Select day 23
+    const date23 = await driver.wait(
       until.elementLocated(
         By.xpath(
-          "//div[contains(@class,'o_date_item_cell') and .//div[text()='22']]",
+          "//div[contains(@class,'o_date_item_cell') and .//div[text()='23']]",
         ),
       ),
       8000,
     );
 
-    await driver.wait(until.elementIsVisible(date22), 4000);
-    await driver.wait(until.elementIsEnabled(date22), 4000);
-    await date18.click();
-    console.log("Select date 22");
+    await driver.wait(until.elementIsVisible(date23), 4000);
+    await driver.wait(until.elementIsEnabled(date23), 4000);
+    await date23.click();
+    console.log("Select date 23");
 
     /* select expected arrival date picker
         const expectedArr = await driver.wait(
@@ -833,7 +833,7 @@ const main = async () => {
 
     await driver.wait(until.elementIsVisible(lotSerial), 7000);
     await lotSerial.click();
-    await lotSerial.sendKeys("LOT-PAR-0001");
+    await lotSerial.sendKeys("LOT-PAR-00016");
     await lotSerial.sendKeys(Key.ENTER);
     console.log("Add Lot/Serial Number");
     await driver.sleep(3000);
@@ -852,6 +852,92 @@ const main = async () => {
     await generateButton.click();
     console.log("Generate button clicked");
     await driver.sleep(3000);
+
+    // Add MFG Date
+    // Wait until the input field is visible
+    const mfg = await driver.wait(
+      until.elementLocated(By.css('td[name="x_reach52_mfg_date"]')),
+      4000,
+    );
+
+    // Scroll into view (optional)
+    await driver.executeScript("arguments[0].scrollIntoView(true);", mfg);
+    await driver.sleep(4000);
+
+    // Click the td element
+    await mfg.click();
+
+    // Locate month using title attribute
+    const mfgMonthButton = await driver.wait(
+      until.elementLocated(By.css('button[title="Select month"]')),
+      6000,
+    );
+
+    // Click the button
+    await mfgMonthButton.click();
+    console.log("Select month clicked successfully.");
+    await driver.sleep(3000);
+
+    // Locate year using title attribute
+    const mfgYearButton = await driver.wait(
+      until.elementLocated(By.css('button[title="Select year"]')),
+      6000,
+    );
+
+    // Click the button
+    await mfgMonthButton.click();
+    await driver.sleep(3000);
+    console.log("Select year clicked successfully.");
+
+    /// Wait until the year 2030 element is present
+    const year2023 = await driver.wait(
+      until.elementLocated(
+        By.xpath(
+          '//div[contains(@class,"o_date_item_cell") and text()="2023"]',
+        ),
+      ),
+      6000,
+    );
+
+    // Scroll into view (optional)
+    await driver.executeScript(
+      "arguments[0].scrollIntoView({block:'center'});",
+      year2023,
+    );
+
+    // Click the year 2023
+    await year2023.click();
+    console.log("Year 2023 selected successfully.");
+
+    await driver.sleep(6000);
+
+    // Wait for the month "Aug"
+    const augMonth = await driver.wait(
+      until.elementLocated(
+        By.xpath('//div[contains(@class,"o_date_item_cell") and text()="Sep"]'),
+      ),
+      6000,
+    );
+
+    // Click the month
+    await augMonth.click();
+    console.log("Month Aug selected successfully.");
+
+    await driver.sleep(4000);
+
+    // STEP 5 — Select day 30
+    const mfgDay30 = await driver.wait(
+      until.elementLocated(
+        By.xpath(
+          "//div[contains(@class,'o_date_item_cell') and .//div[text()='30']]",
+        ),
+      ),
+      6000,
+    );
+
+    await mfgDay30.click();
+    console.log("August 30, 2023 selected successfully.");
+    await driver.sleep(4000);
 
     // Product Expiration date
     // Wait until the input field is visible
@@ -968,7 +1054,7 @@ const main = async () => {
     console.log("Apply button clicked successfully.");
     await driver.sleep(4000);
 
-    // From Owner
+    /* From Owner
     // Wait until the input field is visible
     const clickFromOwner = await driver.wait(
       until.elementLocated(By.css('td[name="owner_id"]')),
@@ -983,7 +1069,7 @@ const main = async () => {
       "arguments[0].scrollIntoView(true);",
       clickFromOwner,
     );
-    await driver.sleep(4000);
+    await driver.sleep(6000);
 
     // Click the td element
     await clickFromOwner.click();
@@ -1016,7 +1102,7 @@ const main = async () => {
     // Use JS click (best for Odoo)
     await driver.executeScript("arguments[0].click();", option);
 
-    console.log("Dropdown option selected successfully");
+    console.log("Dropdown option selected successfully"); */
 
     // Add quantity input field
     const quantityInput = await driver.wait(
@@ -1036,7 +1122,7 @@ const main = async () => {
     await quantityInput.clear();
 
     // Enter quantity
-    await quantityInput.sendKeys("10");
+    await quantityInput.sendKeys("2");
     await driver.sleep(4000);
     console.log("Quantity entered successfully.");
 
@@ -1071,7 +1157,8 @@ const main = async () => {
     await valReceipt.click();
     console.log("Validate the Receipt");
 
-    await driver.sleep(3000);
+    await driver.sleep(10000);
+    
   } catch (err) {
     console.error("test failed:", err);
   } finally {
