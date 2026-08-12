@@ -33,10 +33,10 @@ const main = async () => {
     await driver.wait(async () => {
       const url = await driver.getCurrentUrl();
       return url.includes("database") || url.includes("db=");
-    }, 15000);
+    }, 5000);
 
     // Wait for DB list container
-    await driver.wait(until.elementLocated(By.css(".list-group")), 15000);
+    await driver.wait(until.elementLocated(By.css(".list-group")), 5000);
 
     // Debug: confirm links exist
     let links = await driver.findElements(By.css("a"));
@@ -44,23 +44,22 @@ const main = async () => {
 
     // Click target DB
     let dbLink = await driver.findElement(
-      By.xpath("//a[contains(@href,'uat_plan_b_review')]"),
+      By.xpath("//a[contains(@href,'review')]"),
     );
 
     await dbLink.click();
     await driver.sleep(2000);
 
-    //wait for the username field to be present and visible
     const usernameInput = await driver.wait(
       until.elementLocated(By.id("login")),
-      15000,
+      5000,
     );
 
     await driver.wait(until.elementIsVisible(usernameInput), 5000);
 
     // clear (if needed) and send keys
     await usernameInput.clear();
-    await usernameInput.sendKeys("odoo.dev2@reach52.com");
+    await usernameInput.sendKeys("odoo.dev1@reach52.com");
 
     // optionally verify value
     const value = await usernameInput.getAttribute("value");
@@ -72,7 +71,7 @@ const main = async () => {
       15000,
     );
 
-    await driver.wait(until.elementIsVisible(passwordInput), 5000);
+    await driver.wait(until.elementIsVisible(passwordInput), 4000);
 
     // clear (if needed) and send keys
     await passwordInput.clear();
@@ -85,14 +84,14 @@ const main = async () => {
     // wait for submit button
     const loginBtn = await driver.wait(
       until.elementLocated(By.css("button.btn.btn-primary")),
-      8000,
+      5000,
     );
 
     await driver.wait(until.elementIsVisible(loginBtn), 4000);
     await loginBtn.click();
     console.log("Login button clicked");
 
-    await driver.sleep(2000);
+    await driver.sleep(3000);
 
     // click Inventory App
     const invBtn = await driver.wait(
@@ -178,7 +177,6 @@ const main = async () => {
     await driver.navigate().refresh();
     await driver.sleep(2000);
 
-
     // Click Product menu
     const productbtn = await driver.wait(
       until.elementLocated(
@@ -223,19 +221,19 @@ const main = async () => {
 
     // Add a Lot number
     const lotField = await driver.wait(
-      until.elementLocated(By.id('name_0')),
+      until.elementLocated(By.id("name_0")),
       4000,
     );
 
     await driver.wait(until.elementIsVisible(lotField), 8000);
     await lotField.click();
-    await lotField.sendKeys('LOT-0001-00006');
+    await lotField.sendKeys("LOT-0001-00006");
 
     await driver.sleep(3000);
 
     // Add a product
     const lotProduct = await driver.wait(
-      until.elementLocated(By.id('product_id_0')),
+      until.elementLocated(By.id("product_id_0")),
       4000,
     );
 
@@ -247,7 +245,7 @@ const main = async () => {
 
     // Click product
     const lotProductSelect = await driver.wait(
-      until.elementLocated(By.id('product_id_0_0_0')),
+      until.elementLocated(By.id("product_id_0_0_0")),
       4000,
     );
 
@@ -258,13 +256,15 @@ const main = async () => {
 
     // save internal notes
     const paragraphDiv = await driver.wait(
-      until.elementLocated(By.css('div.note-editable')),
+      until.elementLocated(By.css("div.note-editable")),
       8000,
     );
 
     // Example: click or send keys
     await paragraphDiv.click();
-    await paragraphDiv.sendKeys("Used for relief of fever and mild to moderate pain");
+    await paragraphDiv.sendKeys(
+      "Used for relief of fever and mild to moderate pain",
+    );
 
     // Click Send Message button
     const sendMessage = await driver.wait(
@@ -372,8 +372,6 @@ const main = async () => {
     console.log("Save button is clicked");
 
     await driver.sleep(5000);
-
-
   } catch (err) {
     console.error("test failed:", err);
   } finally {

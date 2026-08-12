@@ -33,10 +33,10 @@ const main = async () => {
     await driver.wait(async () => {
       const url = await driver.getCurrentUrl();
       return url.includes("database") || url.includes("db=");
-    }, 15000);
+    }, 5000);
 
     // Wait for DB list container
-    await driver.wait(until.elementLocated(By.css(".list-group")), 15000);
+    await driver.wait(until.elementLocated(By.css(".list-group")), 5000);
 
     // Debug: confirm links exist
     let links = await driver.findElements(By.css("a"));
@@ -44,23 +44,22 @@ const main = async () => {
 
     // Click target DB
     let dbLink = await driver.findElement(
-      By.xpath("//a[contains(@href,'uat_plan_b_review')]"),
+      By.xpath("//a[contains(@href,'review')]"),
     );
 
     await dbLink.click();
     await driver.sleep(2000);
 
-    //wait for the username field to be present and visible
     const usernameInput = await driver.wait(
       until.elementLocated(By.id("login")),
-      15000,
+      5000,
     );
 
     await driver.wait(until.elementIsVisible(usernameInput), 5000);
 
     // clear (if needed) and send keys
     await usernameInput.clear();
-    await usernameInput.sendKeys("odoo.dev2@reach52.com");
+    await usernameInput.sendKeys("odoo.dev1@reach52.com");
 
     // optionally verify value
     const value = await usernameInput.getAttribute("value");
@@ -72,7 +71,7 @@ const main = async () => {
       15000,
     );
 
-    await driver.wait(until.elementIsVisible(passwordInput), 5000);
+    await driver.wait(until.elementIsVisible(passwordInput), 4000);
 
     // clear (if needed) and send keys
     await passwordInput.clear();
@@ -85,7 +84,7 @@ const main = async () => {
     // wait for submit button
     const loginBtn = await driver.wait(
       until.elementLocated(By.css("button.btn.btn-primary")),
-      8000,
+      5000,
     );
 
     await driver.wait(until.elementIsVisible(loginBtn), 4000);
@@ -137,9 +136,11 @@ const main = async () => {
     await driver.sleep(6000);
 
     // Click the Goods
-     const goodsStck = await driver.wait(
+    const goodsStck = await driver.wait(
       until.elementLocated(
-         By.xpath("//span[contains(@class,'o_search_panel_label_title') and text()='Goods']"),
+        By.xpath(
+          "//span[contains(@class,'o_search_panel_label_title') and text()='Goods']",
+        ),
       ),
       8000,
     );
@@ -148,7 +149,6 @@ const main = async () => {
     await goodsStck.click();
     console.log("Goods is clicked");
 
-
     // Switch to Location
     await rprtInv.click();
     console.log("Reporting menu is clicked");
@@ -156,9 +156,7 @@ const main = async () => {
 
     // Reporting's Location menu
     const rprtLoc = await driver.wait(
-      until.elementLocated(
-        By.css('a[data-menu-xmlid="stock.menu_valuation"]'),
-      ),
+      until.elementLocated(By.css('a[data-menu-xmlid="stock.menu_valuation"]')),
       8000,
     );
 
@@ -170,13 +168,12 @@ const main = async () => {
 
     await driver.sleep(4000);
 
-     const removeBtn = await driver.findElement(
+    const removeBtn = await driver.findElement(
       By.xpath("//button[contains(@class,'o_facet_remove')]"),
     );
 
     await removeBtn.click();
     await driver.sleep(6000);
-
 
     // Switch Move History
     // Click Reporting menu
@@ -201,14 +198,13 @@ const main = async () => {
 
     await driver.sleep(6000);
 
-
     // Move Menu
     await rprtInv.click();
     console.log("Reporting menu is clicked");
 
     await driver.sleep(2000);
 
-     const rprtMA = await driver.wait(
+    const rprtMA = await driver.wait(
       until.elementLocated(
         By.css('a[data-menu-xmlid="stock.stock_move_line_menu"]'),
       ),
@@ -222,8 +218,6 @@ const main = async () => {
     console.log("Move Analysis is clicked");
 
     await driver.sleep(6000);
-    
-
   } catch (err) {
     console.error("test failed:", err);
   } finally {

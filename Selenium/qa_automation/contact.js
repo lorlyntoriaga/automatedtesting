@@ -93,195 +93,94 @@ const main = async () => {
 
     await driver.sleep(3000);
 
-    // click Purchase App
-    const purchaseBtn = await driver.wait(
-      until.elementLocated(By.id("result_app_5")),
-      8000,
+    const contactApp = await driver.wait(
+      until.elementLocated(By.id("result_app_1")),
+      4000,
     );
 
-    await driver.wait(until.elementIsVisible(purchaseBtn), 4000);
-    await purchaseBtn.click();
-    console.log("Purchase button clicked");
-
-    await driver.sleep(2000);
-
-    // Click the Company
-    const companyButton = await driver.wait(
-      until.elementLocated(
-        By.css("div.o_switch_company_menu button.dropdown-toggle"),
-      ),
-      10000,
-    );
-
-    // Click the button
-    await companyButton.click();
-
-    console.log("Company menu clicked successfully.");
-    await driver.sleep(5000);
-
-    // Locate main branch
-    const mainDbChckbx = await driver.wait(
-      until.elementLocated(
-        By.xpath(
-          "//div[@role='menuitemcheckbox' and @aria-label='reach52 IND']",
-        ),
-      ),
-      6000,
-    );
-
-    // Check current state
-    const mainChecked = await mainDbChckbx.getAttribute("aria-checked");
-
-    // Uncheck only if currently checked
-    if (mainChecked === "true") {
-      await mainDbChckbx.click();
-      console.log("Checkbox unchecked.");
-    } else {
-      console.log("Checkbox is already unchecked.");
-    }
-
-    // Select a branch db (Ambala)
-    // Locate the checkbox element using aria-label
-    const ambalaDbChckbx = await driver.wait(
-      until.elementLocated(
-        By.xpath(
-          "//div[@role='menuitemcheckbox' and @aria-label='reach52 - IND - Ambala']",
-        ),
-      ),
-      6000,
-    );
-
-    // Check current state
-    const checked = await ambalaDbChckbx.getAttribute("aria-checked");
-
-    // Click only if not already checked
-    if (checked !== "true") {
-      await ambalaDbChckbx.click();
-      console.log("Checkbox checked.");
-    } else {
-      console.log("Checkbox is already checked.");
-    }
+    await driver.wait(until.elementIsVisible(contactApp), 4000);
+    await contactApp.click();
+    console.log("Contact button clicked");
 
     await driver.sleep(4000);
 
-    // Confirm changing of branch
-    // Wait for the Confirm button
-    const confirmButton = await driver.wait(
-      until.elementLocated(By.xpath("//button[contains(text(),'Confirm')]")),
-      8000,
-    );
-
-    // Click the button
-    await confirmButton.click();
-    await driver.sleep(5000);
-    await driver.navigate().refresh();
-    await driver.sleep(2000);
-
-    // Click Order menu
-    const orderbtn = await driver.wait(
-      until.elementLocated(
-        By.css(
-          'button[data-menu-xmlid="purchase.menu_procurement_management"]',
-        ),
-      ),
-      8000,
-    );
-
-    await driver.wait(until.elementIsVisible(orderbtn), 4000);
-    await orderbtn.click();
-    console.log("Order menu is clicked");
-
-    await driver.sleep(2000);
-
-    // Vendor menu
-    const vendor = await driver.wait(
-      until.elementLocated(
-        By.css(
-          'a[data-menu-xmlid="purchase.menu_procurement_management_supplier_name"]',
-        ),
-      ),
-      8000,
-    );
-
-    await driver.wait(until.elementIsVisible(vendor), 4000);
-
-    //  Click using JavaScript (most reliable in Odoo)
-    await driver.executeScript("arguments[0].click();", vendor);
-    console.log("Purchase Order menu is clicked");
-
-    await driver.sleep(4000);
-
-    // new Vendor button
-    const newVendor = await driver.wait(
+    // new Contact button
+    const newContact = await driver.wait(
       until.elementLocated(By.css("button.o_list_button_add")),
       4000,
     );
 
-    await driver.wait(until.elementIsVisible(newVendor), 4000);
-    await newVendor.click();
-    console.log("New Vendor button clicked");
+    await driver.wait(until.elementIsVisible(newContact), 4000);
+    await newContact.click();
+    console.log("New Contact button clicked");
 
     await driver.sleep(4000);
 
-    const vendorName = await driver.wait(
+    const contactName = await driver.wait(
       until.elementLocated(By.css('input[placeholder="e.g. Lumber Inc"]')),
-      4000,
+      3000,
     );
 
-    await driver.wait(until.elementIsVisible(vendorName), 3000);
+    await driver.wait(elementIsVisible(contactName), 3000);
+    await contactName.click();
+    await driver.sleep(2000);
 
     // clear (if needed) and send keys for Vendor Name
-    await vendorName.clear();
-    await vendorName.sendKeys("KOZRA Inc");
+    await contactName.clear();
+    await contactName.sendKeys("Quzars Inc");
     await driver.sleep(2000);
-    await vendorName.sendKeys(Key.ENTER);
+    await contactName.sendKeys(Key.ENTER);
 
     // optionally verify value
-    const vendorValue = await vendorName.getAttribute("value");
-    console.log("Name of vendor entered:", vendorValue);
+    const vendorValue = await contactName.getAttribute("value");
+    console.log("Name of contact entered:", vendorValue);
 
-    await driver.sleep(4000);
+    await driver.sleep(2000);
 
-    //click email
-    const addEmail = await driver.wait(
+    const contactEmail = await driver.wait(
       until.elementLocated(By.id("email_0")),
       4000,
     );
 
-    await driver.wait(until.elementIsVisible(addEmail), 3000);
-    addEmail.click();
-    console.log("Email is clicked");
+    await driver.wait(until.elementIsVisible(contactEmail), 3000);
+    contactEmail.click();
 
-    // clear (if needed) and send keys in email
-    await addEmail.clear();
-    await addEmail.sendKeys("gupta@gmail.com");
-    await addEmail.sendKeys(Key.ENTER);
-    await driver.sleep(4000);
+    await driver.sleep(2000);
+
+    // clear (if needed) and send keys for Vendor Name
+    await contactEmail.clear();
+    await contactEmail.sendKeys("quzars@gmail.com");
+    await driver.sleep(2000);
+    await contactEmail.sendKeys(Key.ENTER);
+
+    await driver.sleep(2000);
 
     // optionally verify value
-    const emailValue = await addEmail.getAttribute("value");
-    console.log("email entered:", emailValue);
+    const contactEmailValue = await contactEmail.getAttribute("value");
+    console.log("email entered:", contactEmailValue);
 
     await driver.sleep(2000);
 
     // add phone number
-    const addPhone = await driver.wait(
+    const contactPhone = await driver.wait(
       until.elementLocated(By.id("phone_0")),
       4000,
     );
 
-    await driver.wait(until.elementIsVisible(addPhone), 3000);
-    addPhone.click();
+    await driver.wait(until.elementIsVisible(contactPhone), 3000);
+    contactPhone.click();
     console.log("Phone field is clicked");
 
-    // clear (if needed) and send keys in mobile
-    await addPhone.clear();
-    await addPhone.sendKeys("09185426378");
-    await addPhone.sendKeys(Key.ENTER);
-    await driver.sleep(4000);
+    await driver.sleep(2000);
+
+    await contactPhone.clear;
+    await contactPhone.sendKeys("0812398865");
+    await driver.sleep(2000);
+
+    await contactPhone.sendKeys(Key.ENTER);
 
     // optionally verify value
-    const phoneValue = await addPhone.getAttribute("value");
+    const phoneValue = await contactPhone.getAttribute("value");
     console.log("Name of vendor entered:", phoneValue);
 
     // click street
@@ -338,16 +237,6 @@ const main = async () => {
     await driver.wait(until.elementIsVisible(addCity), 3000);
     addCity.click();
 
-    /* clear (if needed) and send keys in search product
-    await addCity.clear();
-    await addCity.sendKeys("Olo")
-    await addCity.sendKeys(Key.ENTER)
-    await driver.sleep(3000) 
-
-    // optionally verify value
-    const cityValue = await addCity.getAttribute("value");
-    console.log("City entered:", cityValue); */
-
     await driver.sleep(3000);
 
     // add zip
@@ -391,7 +280,7 @@ const main = async () => {
     await driver.wait(until.elementIsVisible(selectState), 4000);
     selectState.click();
 
-    await driver.sleep(5000);
+    await driver.sleep(3000);
 
     // add GST
     const addGST = await driver.wait(
@@ -476,33 +365,102 @@ const main = async () => {
 
     await driver.sleep(4000);
 
-    /* Add details for tags
+    // Add details for tags
     const addDetailstTag = await driver.wait(
-        until.elementLocated(By.id('name_0')), 
-        4000);
-    
-    await driver.wait(until.elementIsVisible(addDetailstTag), 4000)
-    addDetailstTag.click()
+      until.elementLocated(By.id("name_0")),
+      4000,
+    );
+
+    await driver.wait(until.elementIsVisible(addDetailstTag), 4000);
+    addDetailstTag.click();
 
     // clear (if needed) and send keys in Tags Details
     await addDetailstTag.clear();
-    await addDetailstTag.sendKeys("Consulting Services")
-    await addDetailstTag.sendKeys(Key.ENTER)
-    await driver.sleep(3000) 
+    await addDetailstTag.sendKeys("Consulting Services");
+    await addDetailstTag.sendKeys(Key.ENTER);
+    await driver.sleep(3000);
 
     // optionally verify value
-    const tagsNameValue = await addStreet.getAttribute("value");
-    console.log("Tags name entered:", tagsNameValue);
+    const tagDetailsValue = await addDetailstTag.getAttribute("value");
+    console.log("Tags name entered:", tagDetailsValue);
 
-    await driver.sleep(3000)
+    await driver.sleep(3000);
 
     // add tags category
-     const addCatTag = await driver.wait(
-        until.elementLocated(By.id('parent_id_0')), 
-        4000);
-    
-    await driver.wait(until.elementIsVisible(addCatTag), 4000)
-    addCatTag.click() */
+    const addCatTag = await driver.wait(
+      until.elementLocated(By.id("parent_id_0")),
+      5000,
+    );
+
+    await driver.wait(until.elementIsVisible(addCatTag), 5000);
+    await addCatTag.click();
+
+    await driver.sleep(4000);
+
+    const createBtn = await driver.wait(
+      until.elementLocated(By.xpath("//a[text()='Create...']")),
+      5000,
+    );
+
+    await driver.executeScript("arguments[0].click();", createBtn);
+
+    // Wait for the new input field
+    const input = await driver.wait(
+      until.elementLocated(By.id("name_0")),
+      5000,
+    );
+
+    await driver.executeScript("arguments[0].focus();", input);
+
+    await input.sendKeys("Local Supplier");
+    await input.sendKeys(Key.ENTER);
+
+    // optionally verify value
+    const tagsNameValue = await input.getAttribute("value");
+    console.log("Tags name entered:", tagsNameValue);
+
+    await driver.sleep(3000);
+
+    // Confirm the Category
+    const modalSaveBtn = await driver.wait(
+      until.elementLocated(
+        By.xpath(
+          "//div[contains(@class,'o_technical_modal')]//button[contains(@class,'btn-primary') and text()='Save']",
+        ),
+      ),
+      5000,
+    );
+
+    await driver.executeScript("arguments[0].click();", modalSaveBtn);
+    console.log("Category is save");
+
+    // Add date for Customer since
+    const sinceDate = await driver.wait(
+      until.elementLocated(By.id("reach52_customer_since_0")),
+      5000,
+    );
+
+    await driver.wait(until.elementIsVisible(sinceDate), 4000);
+    sinceDate.click();
+    console.log("since date-picker is clicked");
+    await driver.sleep(4000);
+
+    // 2. Select day 19
+    const date19 = await driver.wait(
+      until.elementLocated(
+        By.xpath(
+          "//div[contains(@class,'o_date_item_cell') and .//div[text()='19']]",
+        ),
+      ),
+      8000,
+    );
+
+    await driver.wait(until.elementIsVisible(date19), 4000);
+    await driver.wait(until.elementIsEnabled(date19), 4000);
+    await date19.click();
+    console.log("Select date 19");
+
+    await driver.sleep(3000);
 
     // click contact card
     const addContact = driver.wait(
@@ -721,6 +679,7 @@ const main = async () => {
     console.log("Save button is clicked");
 
     await driver.sleep(5000);
+    
   } catch (err) {
     console.error("test failed:", err);
   } finally {

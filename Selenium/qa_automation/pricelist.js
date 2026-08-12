@@ -93,55 +93,9 @@ const main = async () => {
 
     await driver.sleep(3000);
 
-    // click Purchase App
-    const purchaseBtn = await driver.wait(
-      until.elementLocated(By.id("result_app_5")),
-      8000,
-    );
+    
 
-    await driver.wait(until.elementIsVisible(purchaseBtn), 4000);
-    await purchaseBtn.click();
-    console.log("Purchase button clicked");
-
-    await driver.sleep(2000);
-
-    // Click Order menu
-    const orderbtn = await driver.wait(
-      until.elementLocated(
-        By.css('button[data-menu-xmlid="purchase.purchase_report_main"]'),
-      ),
-      8000,
-    );
-
-    await driver.wait(until.elementIsVisible(orderbtn), 4000);
-    await orderbtn.click();
-    console.log("Reporting menu is clicked");
-
-    await driver.sleep(2000);
-
-    // Report menu
-    const rprtPur = await driver.wait(
-      until.elementLocated(
-        By.css('a[data-menu-xmlid="purchase.purchase_report"]'),
-      ),
-      8000,
-    );
-
-    await driver.wait(until.elementIsVisible(rprtPur), 4000);
-
-    //  Click using JavaScript (most reliable in Odoo)
-    await driver.executeScript("arguments[0].click();", rprtPur);
-    console.log("Purchase is clicked");
-
-    await driver.sleep(6000);
-
-    const removeBtn = await driver.findElement(
-      By.xpath("//button[contains(@class,'o_facet_remove')]"),
-    );
-
-    await removeBtn.click();
-    await driver.sleep(6000);
-  } catch (err) {
+      } catch (err) {
     console.error("test failed:", err);
   } finally {
     await driver.quit();
